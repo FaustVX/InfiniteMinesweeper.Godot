@@ -2,6 +2,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Godot;
 using InfiniteMinesweeper;
 
@@ -13,37 +14,32 @@ public partial class Map : Node2D
     public required Camera2D Camera { get; set; }
     [Export]
     public required int Seed { get; set; } = Random.Shared.Next();
+    [Export(PropertyHint.Range, "1, 50, or_greater")]
+    public required int MinesPerChunk { get; set; } = 10;
     [Export]
     public required Label Label { get; set; }
 
     private Game _game;
-    private bool _mouseDragging = false;
-    private bool _mousePressed = false;
     private bool _showRemainingMines = false;
 
     public override void _Ready()
-    => _game = new(Seed);
+    {
+        _game = new(Seed, MinesPerChunk);
+        if (OS.GetName() is "Android" or "iOS")
+            Camera.Zoom *= 4;
+    }
 
     public override void _Input(InputEvent @event)
     {
         ProcessAction(@event);
+        @event.ProcessDragging(Camera);
 
-        var chunk = _game.GetChunk(MineField.GlobalToMap(GetGlobalMousePosition()).AsPos.ToChunkPos(out var posInChunk), ChunkState.NotGenerated);
-        Label.Text = $"Remaining Mines: {chunk.RemainingMines}; Pos in Chunk: {posInChunk}";
-
-        if (@event is InputEventMouseMotion motion && _mousePressed)
-        {
-            _mouseDragging = true;
-            Camera.GlobalPosition -= motion.Relative / Camera.Zoom;
-            QueueRedraw();
-        }
-
-        if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Right } btn && !(_mousePressed = btn.Pressed))
-            _mouseDragging = false;
+        var chunk = _game.GetChunk(MineField.GlobalToMap(GetGlobalMousePosition()).AsPos.ToChunkPos(out _), ChunkState.NotGenerated);
+        Label.Text = $"Remaining Mines: {chunk.RemainingMines}";
 
         void ProcessAction(InputEvent @event)
         {
-            if (_mouseDragging || !@event.IsActionType())
+            if (Camera.IsMouseDragging || !@event.IsActionType())
                 return;
             var localPosition = MineField.GlobalToMap(GetGlobalMousePosition());
             if (@event.IsExplore)
@@ -66,9 +62,6 @@ public partial class Map : Node2D
     }
 
     public override void _Draw()
-    => DrawVisibleScreen();
-
-    private void DrawVisibleScreen()
     {
         // Get the visible rectangle in world coordinates
         var visibleRect = Camera.GetViewportRect();
@@ -122,9 +115,45 @@ file static class Ext
     {
         public bool IsExplore => ev.IsActionReleased("Explore", true);
         public bool IsFlag => ev.IsActionReleased("Flag", true);
-        public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true);
-        public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true);
+        public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true) || ev is InputEventMagnifyGesture { Factor: > 0 };
+        public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true) || ev is InputEventMagnifyGesture { Factor: < 0 };
         public bool IsShowRemainingMines => ev.IsActionPressed("ShowRemainingMines", true);
+        public void ProcessDragging(Camera2D camera)
+        {
+            if (ev is InputEventMouseMotion motion && camera.IsMousePressed)
+            {
+                camera.IsMouseDragging = true;
+                camera.GlobalPosition -= motion.Relative / camera.Zoom;
+            }
+
+            if (ev is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Right } btn && !(camera.IsMousePressed = btn.Pressed))
+                camera.IsMouseDragging = false;
+        }
+    }
+}
+
+file static class CameraExt
+{
+    extension(Camera2D camera)
+    {
+        public bool IsMouseDragging
+        {
+            get => _table.GetOrCreateValue(camera).IsMouseDragging;
+            set => _table.GetOrCreateValue(camera).IsMouseDragging = value;
+        }
+        public bool IsMousePressed
+        {
+            get => _table.GetOrCreateValue(camera).IsMousePressed;
+            set => _table.GetOrCreateValue(camera).IsMousePressed = value;
+        }
+    }
+
+    private static readonly ConditionalWeakTable<Camera2D, Info> _table = [];
+
+    private sealed class Info
+    {
+        public bool IsMouseDragging { get; set; }
+        public bool IsMousePressed{ get; set; }
     }
 }
 
