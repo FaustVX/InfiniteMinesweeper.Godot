@@ -69,12 +69,13 @@ shadow_color = Color(0, 0, 0, 0.796078)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
 Camera = NodePath("Camera2D")
 MinesPerChunk = 15
 Label = NodePath("CanvasLayer/Label")
+ShowRemainingMines = NodePath("CanvasLayer/CheckBox")
 
 [node name="Minefield" type="TileMapLayer" parent="World"]
 texture_filter = 1
@@ -86,8 +87,17 @@ tile_set = SubResource("TileSet_q6r6c")
 [node name="CanvasLayer" type="CanvasLayer" parent="World"]
 
 [node name="Label" type="Label" parent="World/CanvasLayer"]
-anchors_preset = 10
-anchor_right = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
 offset_bottom = 40.0
+grow_horizontal = 2
 label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
+
+[node name="CheckBox" type="CheckBox" parent="World/CanvasLayer"]
+offset_right = 24.0
+offset_bottom = 24.0
+text = "Show Remaining Mines"

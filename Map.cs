@@ -18,9 +18,10 @@ public partial class Map : Node2D
     public required int MinesPerChunk { get; set; } = 10;
     [Export]
     public required Label Label { get; set; }
+    [Export]
+    public required CheckBox ShowRemainingMines { get; set; }
 
     private Game _game;
-    private bool _showRemainingMines = false;
 
     public override void _Ready()
     {
@@ -29,7 +30,10 @@ public partial class Map : Node2D
         {
             Camera.Zoom *= 4;
             Label.Scale *= 4;
+            ShowRemainingMines.Scale *= 4;
         }
+
+        ShowRemainingMines.Pressed += QueueRedraw;
     }
 
     public override void _Input(InputEvent @event)
@@ -42,7 +46,7 @@ public partial class Map : Node2D
 
         void ProcessAction(InputEvent @event)
         {
-            if (Camera.IsMouseDragging || !@event.IsActionType())
+            if (Camera.IsMouseDragging || !@event.IsActionType() || (@event is InputEventMouse && ShowRemainingMines.HasMouseOver))
                 return;
             var localPosition = MineField.GlobalToMap(GetGlobalMousePosition());
             if (@event.IsExplore)
@@ -59,7 +63,7 @@ public partial class Map : Node2D
             else if (@event.IsZoomOut)
                 ZoomAtCursor(zoomIn: false);
             else if (@event.IsShowRemainingMines)
-                _showRemainingMines ^= true; // toggle bool
+                ShowRemainingMines.ButtonPressed ^= true; // toggle bool
             QueueRedraw();
         }
     }
@@ -78,7 +82,7 @@ public partial class Map : Node2D
             for (var y = cellTopLeft.Y; y <= cellBottomRight.Y; y++)
             {
                 ref var cell = ref _game.GetCell(new(x, y), ChunkState.NotGenerated);
-                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
+                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, ShowRemainingMines.ButtonPressed ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
             }
     }
 
@@ -132,6 +136,11 @@ file static class Ext
             if (ev is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Right } btn && !(camera.IsMousePressed = btn.Pressed))
                 camera.IsMouseDragging = false;
         }
+    }
+
+    extension(Control control)
+    {
+        public bool HasMouseOver => control.GetGlobalRect().HasPoint(control.GetLocalMousePosition());
     }
 }
 
