@@ -10,6 +10,19 @@
 			},
 			"problemMatcher": [],
 			"label": "build"
-		}
+		},
+        {
+            "label": "open editor",
+			"type": "process",
+			"options": {
+				"cwd": "${workspaceFolder}/../Godot_v4.4.1-stable_mono_win64/"
+			},
+            "command": "Godot_v4.4.1-stable_mono_win64.exe",
+			"args": [
+				"--path",
+				"${workspaceFolder}",
+				"--editor",
+			]
+        }
 	]
 }
