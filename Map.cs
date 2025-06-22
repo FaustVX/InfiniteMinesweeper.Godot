@@ -26,7 +26,10 @@ public partial class Map : Node2D
     {
         _game = new(Seed, MinesPerChunk);
         if (OS.GetName() is "Android" or "iOS")
+        {
             Camera.Zoom *= 4;
+            Label.Scale *= 4;
+        }
     }
 
     public override void _Input(InputEvent @event)
