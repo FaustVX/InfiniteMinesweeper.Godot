@@ -20,6 +20,10 @@ public partial class Map : Node2D
     public required Label Label { get; set; }
     [Export]
     public required CheckBox ShowRemainingMines { get; set; }
+    [Export]
+    public required Button ZoomIn { get; set; }
+    [Export]
+    public required Button ZoomOut { get; set; }
 
     private Game _game;
 
@@ -29,11 +33,28 @@ public partial class Map : Node2D
         if (OS.GetName() is "Android" or "iOS")
         {
             Camera.Zoom *= 4;
-            Label.Scale *= 4;
-            ShowRemainingMines.Scale *= 4;
+
+            Label.ResizeControl(4);
+            ShowRemainingMines.ResizeControl(4);
+            ZoomIn.ResizeControl(4);
+            ZoomOut.ResizeControl(4);
         }
 
         ShowRemainingMines.Pressed += QueueRedraw;
+        ZoomIn.Pressed += ZoomInHandler;
+        ZoomOut.Pressed += ZoomOutHandler;
+    }
+
+    private void ZoomInHandler()
+    {
+        ZoomAtCursor(true);
+        QueueRedraw();
+    }
+
+    private void ZoomOutHandler()
+    {
+        ZoomAtCursor(false);
+        QueueRedraw();
     }
 
     public override void _Input(InputEvent @event)
@@ -46,7 +67,7 @@ public partial class Map : Node2D
 
         void ProcessAction(InputEvent @event)
         {
-            if (Camera.IsMouseDragging || !@event.IsActionType() || (@event is InputEventMouse && ShowRemainingMines.HasMouseOver))
+            if (Camera.IsMouseDragging || !@event.IsActionType() || (@event is InputEventMouse && GetTree().CurrentScene.GetAllChildren<Control>().Any(static c => c.HasMouseOver)))
                 return;
             var localPosition = MineField.GlobalToMap(GetGlobalMousePosition());
             if (@event.IsExplore)
@@ -140,7 +161,32 @@ file static class Ext
 
     extension(Control control)
     {
-        public bool HasMouseOver => control.GetGlobalRect().HasPoint(control.GetLocalMousePosition());
+        public bool HasMouseOver => control.GetGlobalRect().HasPoint(control.GetGlobalMousePosition());
+        public void ResizeControl(float scale)
+        {
+            var anchorLeft = control.AnchorLeft;
+            var anchorTop = control.AnchorTop;
+            var anchorRight = control.AnchorRight;
+            var anchorBottom = control.AnchorBottom;
+            control.Scale *= scale;
+            control.AnchorLeft = anchorLeft;
+            control.AnchorTop = anchorTop;
+            control.AnchorRight = anchorRight;
+            control.AnchorBottom = anchorBottom;
+        }
+    }
+
+    extension(Node node)
+    {
+        public IEnumerable<T> GetAllChildren<T>()
+        where T : Node
+        {
+            if (node is T item)
+                yield return item;
+            foreach (var child in node.GetChildren())
+                foreach (var n in child.GetAllChildren<T>())
+                    yield return n;
+        }
     }
 }
 

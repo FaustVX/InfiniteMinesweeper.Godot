@@ -69,13 +69,15 @@ shadow_color = Color(0, 0, 0, 0.796078)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
 Camera = NodePath("Camera2D")
 MinesPerChunk = 15
 Label = NodePath("CanvasLayer/Label")
-ShowRemainingMines = NodePath("CanvasLayer/CheckBox")
+ShowRemainingMines = NodePath("CanvasLayer/Show Remaining Mines")
+ZoomIn = NodePath("CanvasLayer/Zoom Container/Zoom In")
+ZoomOut = NodePath("CanvasLayer/Zoom Container/Zoom Out")
 
 [node name="Minefield" type="TileMapLayer" parent="World"]
 texture_filter = 1
@@ -97,7 +99,27 @@ grow_horizontal = 2
 label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
 
-[node name="CheckBox" type="CheckBox" parent="World/CanvasLayer"]
+[node name="Show Remaining Mines" type="CheckBox" parent="World/CanvasLayer"]
 offset_right = 24.0
 offset_bottom = 24.0
 text = "Show Remaining Mines"
+
+[node name="Zoom Container" type="VBoxContainer" parent="World/CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -86.0
+offset_top = -66.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="Zoom In" type="Button" parent="World/CanvasLayer/Zoom Container"]
+layout_mode = 2
+text = "Zoom In"
+
+[node name="Zoom Out" type="Button" parent="World/CanvasLayer/Zoom Container"]
+layout_mode = 2
+text = "Zoom Out"
