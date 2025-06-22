@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        ".godot": "Properties"
+    },
+    "files.exclude": {
+        "**/.godot": true,
+        "**/android": true,
+        "**/bin": true
+    },
+    "dotnet.defaultSolution": "Test1.sln"
+}

@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://i3rjt0vjpm75"]
+
+[ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
+[ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
+texture = ExtResource("2_epypp")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
+texture = ExtResource("2_epypp")
+0:0/0 = 0
+0:0/0/modulate = Color(0.75, 0.75, 0.75, 1)
+1:0/0 = 0
+1:0/0/modulate = Color(0.75, 0.75, 0.75, 1)
+2:0/0 = 0
+2:0/0/modulate = Color(0.75, 0.75, 0.75, 1)
+3:0/0 = 0
+3:0/0/modulate = Color(0.75, 0.75, 0.75, 1)
+0:1/0 = 0
+0:1/0/modulate = Color(0.75, 0.75, 0.75, 1)
+1:1/0 = 0
+1:1/0/modulate = Color(0.75, 0.75, 0.75, 1)
+2:1/0 = 0
+2:1/0/modulate = Color(0.75, 0.75, 0.75, 1)
+3:1/0 = 0
+3:1/0/modulate = Color(0.75, 0.75, 0.75, 1)
+0:2/0 = 0
+0:2/0/modulate = Color(0.75, 0.75, 0.75, 1)
+1:2/0 = 0
+1:2/0/modulate = Color(0.75, 0.75, 0.75, 1)
+2:2/0 = 0
+2:2/0/modulate = Color(0.75, 0.75, 0.75, 1)
+3:2/0 = 0
+3:2/0/modulate = Color(0.75, 0.75, 0.75, 1)
+0:3/0 = 0
+0:3/0/modulate = Color(0.75, 0.75, 0.75, 1)
+1:3/0 = 0
+1:3/0/modulate = Color(0.75, 0.75, 0.75, 1)
+2:3/0 = 0
+2:3/0/modulate = Color(0.75, 0.75, 0.75, 1)
+3:3/0 = 0
+3:3/0/modulate = Color(0.75, 0.75, 0.75, 1)
+
+[sub_resource type="TileSet" id="TileSet_q6r6c"]
+sources/0 = SubResource("TileSetAtlasSource_0hol4")
+sources/1 = SubResource("TileSetAtlasSource_epypp")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+z_index = 10
+offset_right = 1.0
+offset_bottom = 23.0
+
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label")]
+script = ExtResource("2_0e48y")
+MineField = NodePath("Minefield")
+Camera = NodePath("Camera2D")
+Label = NodePath("../Label")
+
+[node name="Minefield" type="TileMapLayer" parent="World"]
+tile_set = SubResource("TileSet_q6r6c")
+
+[node name="Camera2D" type="Camera2D" parent="World"]
