@@ -184,7 +184,7 @@ file static class CellExt
                             ( _   , _    , true , true  ) => new(2        , 2), // flag
                             ( _   , true , _    , false ) => new(2        , 3), // mine
                             ( 0   , _    , _    , false ) => new(0        , 2), // empty
-                            ( < 0 , _    , _    , false ) => new(3        , 2), // negative mines arround (too many flags)
+                            ( < 0 , _    , _    , false ) => new(0        , 3), // negative mines arround (too many flags)
                             ( <= 4, _    , _    , false ) => new(mines - 1, 0), // number
                             ( <= 8, _    , _    , false ) => new(mines - 5, 1), // number
                             ( _   , _    , _    , _     ) => new(3        , 3), // error
