@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=14 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
@@ -61,11 +61,20 @@ texture = ExtResource("2_epypp")
 sources/0 = SubResource("TileSetAtlasSource_0hol4")
 sources/1 = SubResource("TileSetAtlasSource_epypp")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0e48y"]
+bg_color = Color(0.6, 0.6, 0.6, 0.498039)
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 15.0
+expand_margin_right = 15.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_0e48y"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
 outline_size = 1
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 2
-shadow_color = Color(0, 0, 0, 0.796078)
+outline_color = Color(0.5, 0.5, 0.5, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.498039)
 
 [sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
 physical_keycode = 4194325
@@ -118,6 +127,7 @@ offset_left = -0.5
 offset_right = 0.5
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0e48y")
 label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
 
