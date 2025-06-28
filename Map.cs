@@ -22,7 +22,7 @@ public partial class Map : Node2D
     public required int MinesPerChunk { get; set; } = 10;
     [Export]
     public required Label Label { get; set; }
-    [Export]
+    [Export, ExportGroup("Inputs")]
     public required CheckBox ShowRemainingMines { get; set; }
     [Export]
     public required Button ZoomIn { get; set; }
@@ -30,6 +30,8 @@ public partial class Map : Node2D
     public required Button ZoomOut { get; set; }
     [Export]
     public required Button Restart { get; set; }
+    [Export]
+    public required CheckButton Groups { get; set; }
 
     private Game _game;
 
@@ -45,19 +47,20 @@ public partial class Map : Node2D
             ZoomIn.ResizeControl(4);
             ZoomOut.ResizeControl(4);
             Restart.ResizeControl(4);
+            Groups.ResizeControl(4);
         }
 
         ShowRemainingMines.Pressed += QueueRedraw;
         ZoomIn.Pressed += ZoomInHandler;
         ZoomOut.Pressed += ZoomOutHandler;
         Restart.Pressed += RestartHandler;
+        Groups.Toggled += GroupsHandler;
     }
 
     private void NewGame()
     {
         _game = new(Seed, MinesPerChunk);
     }
-
 
     private void ZoomInHandler()
     {
@@ -75,6 +78,11 @@ public partial class Map : Node2D
     {
         NewGame();
         QueueRedraw();
+    }
+
+    private void GroupsHandler(bool toggledOn)
+    {
+        throw new NotImplementedException();
     }
 
     public override void _Input(InputEvent @event)
@@ -103,10 +111,6 @@ public partial class Map : Node2D
                 ZoomAtCursor(zoomIn: true);
             else if (@event.IsZoomOut)
                 ZoomAtCursor(zoomIn: false);
-            else if (@event.IsShowRemainingMines)
-                ShowRemainingMines.ButtonPressed ^= true; // toggle bool
-            else if (@event.IsRestart)
-                NewGame();
             QueueRedraw();
         }
     }
@@ -163,12 +167,10 @@ file static class Ext
 
     extension(InputEvent ev)
     {
-        public bool IsRestart => ev.IsActionReleased("Restart", true);
         public bool IsExplore => ev.IsActionReleased("Explore", true);
         public bool IsFlag => ev.IsActionReleased("Flag", true);
-        public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true) || ev is InputEventMagnifyGesture { Factor: > 0 };
-        public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true) || ev is InputEventMagnifyGesture { Factor: < 0 };
-        public bool IsShowRemainingMines => ev.IsActionPressed("ShowRemainingMines", true);
+        public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true);
+        public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true);
         public void ProcessDragging(Camera2D camera)
         {
             if (ev is InputEventMouseMotion motion && camera.IsMousePressed)

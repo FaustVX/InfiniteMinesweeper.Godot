@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=13 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
@@ -67,18 +67,39 @@ outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.796078)
 
+[sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
+physical_keycode = 4194325
+
+[sub_resource type="Shortcut" id="Shortcut_epypp"]
+events = [SubResource("InputEventKey_0e48y")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_rj586"]
+ctrl_pressed = true
+key_label = 82
+
+[sub_resource type="Shortcut" id="Shortcut_4d7sh"]
+events = [SubResource("InputEventKey_rj586")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ir8iy"]
+ctrl_pressed = true
+key_label = 71
+
+[sub_resource type="Shortcut" id="Shortcut_hqns4"]
+events = [SubResource("InputEventKey_ir8iy")]
+
 [node name="Node2D" type="Node2D"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut", "Restart")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut", "Restart", "Groups")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
 Camera = NodePath("Camera2D")
 MinesPerChunk = 15
 Label = NodePath("CanvasLayer/Label")
 ShowRemainingMines = NodePath("CanvasLayer/Show Remaining Mines")
-ZoomIn = NodePath("CanvasLayer/Zoom Container/Zoom In")
-ZoomOut = NodePath("CanvasLayer/Zoom Container/Zoom Out")
-Restart = NodePath("CanvasLayer/Zoom Container/Restart")
+ZoomIn = NodePath("CanvasLayer/Control Container/Zoom In")
+ZoomOut = NodePath("CanvasLayer/Control Container/Zoom Out")
+Restart = NodePath("CanvasLayer/Control Container/Restart")
+Groups = NodePath("CanvasLayer/Control Container/CheckButton")
 
 [node name="Minefield" type="TileMapLayer" parent="World"]
 texture_filter = 1
@@ -103,9 +124,10 @@ horizontal_alignment = 1
 [node name="Show Remaining Mines" type="CheckBox" parent="World/CanvasLayer"]
 offset_right = 24.0
 offset_bottom = 24.0
+shortcut = SubResource("Shortcut_epypp")
 text = "Show Remaining Mines"
 
-[node name="Zoom Container" type="VBoxContainer" parent="World/CanvasLayer"]
+[node name="Control Container" type="VBoxContainer" parent="World/CanvasLayer"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -117,14 +139,20 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="Zoom In" type="Button" parent="World/CanvasLayer/Zoom Container"]
+[node name="Zoom In" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 text = "Zoom In"
 
-[node name="Zoom Out" type="Button" parent="World/CanvasLayer/Zoom Container"]
+[node name="Zoom Out" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 text = "Zoom Out"
 
-[node name="Restart" type="Button" parent="World/CanvasLayer/Zoom Container"]
+[node name="Restart" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
+shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
+
+[node name="CheckButton" type="CheckButton" parent="World/CanvasLayer/Control Container"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_hqns4")
+text = "Check Groups"
