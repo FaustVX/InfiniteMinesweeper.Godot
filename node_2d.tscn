@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=15 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
+[ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://Resize.cs" id="3_epypp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
 texture = ExtResource("2_epypp")
@@ -98,17 +99,11 @@ events = [SubResource("InputEventKey_ir8iy")]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut", "Restart", "Groups")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
 Camera = NodePath("Camera2D")
 MinesPerChunk = 15
-Label = NodePath("CanvasLayer/Label")
-ShowRemainingMines = NodePath("CanvasLayer/Show Remaining Mines")
-ZoomIn = NodePath("CanvasLayer/Control Container/Zoom In")
-ZoomOut = NodePath("CanvasLayer/Control Container/Zoom Out")
-Restart = NodePath("CanvasLayer/Control Container/Restart")
-Groups = NodePath("CanvasLayer/Control Container/CheckButton")
 
 [node name="Minefield" type="TileMapLayer" parent="World"]
 texture_filter = 1
@@ -130,12 +125,14 @@ grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_0e48y")
 label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
+script = ExtResource("3_epypp")
 
 [node name="Show Remaining Mines" type="CheckBox" parent="World/CanvasLayer"]
 offset_right = 24.0
 offset_bottom = 24.0
 shortcut = SubResource("Shortcut_epypp")
 text = "Show Remaining Mines"
+script = ExtResource("3_epypp")
 
 [node name="Control Container" type="VBoxContainer" parent="World/CanvasLayer"]
 anchors_preset = 3
@@ -152,17 +149,34 @@ alignment = 2
 [node name="Zoom In" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 text = "Zoom In"
+script = ExtResource("3_epypp")
 
 [node name="Zoom Out" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 text = "Zoom Out"
+script = ExtResource("3_epypp")
 
 [node name="Restart" type="Button" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
+script = ExtResource("3_epypp")
 
 [node name="CheckButton" type="CheckButton" parent="World/CanvasLayer/Control Container"]
 layout_mode = 2
 shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
+script = ExtResource("3_epypp")
+
+[connection signal="Info" from="World" to="World/CanvasLayer/Label" method="set_text"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Label" method="ResizeControl"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Show Remaining Mines" method="ResizeControl"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Control Container/Zoom In" method="ResizeControl"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Control Container/Zoom Out" method="ResizeControl"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Control Container/Restart" method="ResizeControl"]
+[connection signal="Resize" from="World" to="World/CanvasLayer/Control Container/CheckButton" method="ResizeControl"]
+[connection signal="toggled" from="World/CanvasLayer/Show Remaining Mines" to="World" method="ToggleShowRemainingMines"]
+[connection signal="pressed" from="World/CanvasLayer/Control Container/Zoom In" to="World" method="ZoomInHandler"]
+[connection signal="pressed" from="World/CanvasLayer/Control Container/Zoom Out" to="World" method="ZoomOutHandler"]
+[connection signal="pressed" from="World/CanvasLayer/Control Container/Restart" to="World" method="RestartHandler"]
+[connection signal="toggled" from="World/CanvasLayer/Control Container/CheckButton" to="World" method="GroupsHandler"]

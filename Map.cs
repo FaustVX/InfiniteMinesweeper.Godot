@@ -20,20 +20,14 @@ public partial class Map : Node2D
     }
     [Export(PropertyHint.Range, "1, 50, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
-    [Export]
-    public required Label Label { get; set; }
-    [Export, ExportGroup("Inputs")]
-    public required CheckBox ShowRemainingMines { get; set; }
-    [Export]
-    public required Button ZoomIn { get; set; }
-    [Export]
-    public required Button ZoomOut { get; set; }
-    [Export]
-    public required Button Restart { get; set; }
-    [Export]
-    public required CheckButton Groups { get; set; }
+
+    [Signal]
+    public delegate void ResizeEventHandler(float scale);
+    [Signal]
+    public delegate void InfoEventHandler(string message);
 
     private Game _game;
+    private bool _showRemainingMines;
 
     public override void _Ready()
     {
@@ -41,20 +35,8 @@ public partial class Map : Node2D
         if (OS.GetName() is "Android" or "iOS")
         {
             Camera.Zoom *= 4;
-
-            Label.ResizeControl(4);
-            ShowRemainingMines.ResizeControl(4);
-            ZoomIn.ResizeControl(4);
-            ZoomOut.ResizeControl(4);
-            Restart.ResizeControl(4);
-            Groups.ResizeControl(4);
+            EmitSignalResize(4);
         }
-
-        ShowRemainingMines.Pressed += QueueRedraw;
-        ZoomIn.Pressed += ZoomInHandler;
-        ZoomOut.Pressed += ZoomOutHandler;
-        Restart.Pressed += RestartHandler;
-        Groups.Toggled += GroupsHandler;
     }
 
     private void NewGame()
@@ -62,27 +44,33 @@ public partial class Map : Node2D
         _game = new(Seed, MinesPerChunk);
     }
 
-    private void ZoomInHandler()
+    public void ZoomInHandler()
     {
         ZoomAtCursor(true);
         QueueRedraw();
     }
 
-    private void ZoomOutHandler()
+    public void ZoomOutHandler()
     {
         ZoomAtCursor(false);
         QueueRedraw();
     }
 
-    private void RestartHandler()
+    public void RestartHandler()
     {
         NewGame();
         QueueRedraw();
     }
 
-    private void GroupsHandler(bool toggledOn)
+    public void GroupsHandler(bool toggledOn)
     {
         throw new NotImplementedException();
+    }
+
+    public void ToggleShowRemainingMines(bool showed)
+    {
+        _showRemainingMines = showed;
+        QueueRedraw();
     }
 
     public override void _Input(InputEvent @event)
@@ -91,7 +79,7 @@ public partial class Map : Node2D
         @event.ProcessDragging(Camera);
 
         var chunk = _game.GetChunk(MineField.GlobalToMap(GetGlobalMousePosition()).AsPos.ToChunkPos(out _), ChunkState.NotGenerated);
-        Label.Text = $"Remaining Mines: {chunk.RemainingMines}";
+        EmitSignalInfo($"Remaining Mines: {chunk.RemainingMines}");
 
         void ProcessAction(InputEvent @event)
         {
@@ -129,7 +117,7 @@ public partial class Map : Node2D
             for (var y = cellTopLeft.Y; y <= cellBottomRight.Y; y++)
             {
                 ref var cell = ref _game.GetCell(new(x, y), ChunkState.NotGenerated);
-                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, ShowRemainingMines.ButtonPressed ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
+                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
             }
     }
 
@@ -187,18 +175,6 @@ file static class Ext
     extension(Control control)
     {
         public bool HasMouseOver => control.GetGlobalRect().HasPoint(control.GetGlobalMousePosition());
-        public void ResizeControl(float scale)
-        {
-            var anchorLeft = control.AnchorLeft;
-            var anchorTop = control.AnchorTop;
-            var anchorRight = control.AnchorRight;
-            var anchorBottom = control.AnchorBottom;
-            control.Scale *= scale;
-            control.AnchorLeft = anchorLeft;
-            control.AnchorTop = anchorTop;
-            control.AnchorRight = anchorRight;
-            control.AnchorBottom = anchorBottom;
-        }
     }
 
     extension(Node node)
