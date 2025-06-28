@@ -119,7 +119,7 @@ public partial class Map : Node2D
     {
         // Get the visible rectangle in world coordinates
         var visibleRect = Camera.GetViewportRect();
-        var halfSize = (visibleRect.Size * 0.5f) * Camera.Zoom;
+        var halfSize = (visibleRect.Size * 0.5f) / Camera.Zoom;
         // Convert world coordinates to map cell coordinates
         var cellTopLeft = MineField.GlobalToMap(Camera.GetScreenCenterPosition() - halfSize);
         var cellBottomRight = MineField.GlobalToMap(Camera.GetScreenCenterPosition() + halfSize);
