@@ -13,7 +13,11 @@ public partial class Map : Node2D
     [Export]
     public required Camera2D Camera { get; set; }
     [Export]
-    public required int Seed { get; set; } = Random.Shared.Next();
+    public required int Seed
+    {
+        get => field is 0 ? Random.Shared.Next() : field;
+        set => field = value;
+    }
     [Export(PropertyHint.Range, "1, 50, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
     [Export]
@@ -24,12 +28,14 @@ public partial class Map : Node2D
     public required Button ZoomIn { get; set; }
     [Export]
     public required Button ZoomOut { get; set; }
+    [Export]
+    public required Button Restart { get; set; }
 
     private Game _game;
 
     public override void _Ready()
     {
-        _game = new(Seed, MinesPerChunk);
+        NewGame();
         if (OS.GetName() is "Android" or "iOS")
         {
             Camera.Zoom *= 4;
@@ -38,12 +44,20 @@ public partial class Map : Node2D
             ShowRemainingMines.ResizeControl(4);
             ZoomIn.ResizeControl(4);
             ZoomOut.ResizeControl(4);
+            Restart.ResizeControl(4);
         }
 
         ShowRemainingMines.Pressed += QueueRedraw;
         ZoomIn.Pressed += ZoomInHandler;
         ZoomOut.Pressed += ZoomOutHandler;
+        Restart.Pressed += RestartHandler;
     }
+
+    private void NewGame()
+    {
+        _game = new(Seed, MinesPerChunk);
+    }
+
 
     private void ZoomInHandler()
     {
@@ -54,6 +68,12 @@ public partial class Map : Node2D
     private void ZoomOutHandler()
     {
         ZoomAtCursor(false);
+        QueueRedraw();
+    }
+
+    private void RestartHandler()
+    {
+        NewGame();
         QueueRedraw();
     }
 
@@ -85,6 +105,8 @@ public partial class Map : Node2D
                 ZoomAtCursor(zoomIn: false);
             else if (@event.IsShowRemainingMines)
                 ShowRemainingMines.ButtonPressed ^= true; // toggle bool
+            else if (@event.IsRestart)
+                NewGame();
             QueueRedraw();
         }
     }
@@ -141,6 +163,7 @@ file static class Ext
 
     extension(InputEvent ev)
     {
+        public bool IsRestart => ev.IsActionReleased("Restart", true);
         public bool IsExplore => ev.IsActionReleased("Explore", true);
         public bool IsFlag => ev.IsActionReleased("Flag", true);
         public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true) || ev is InputEventMagnifyGesture { Factor: > 0 };

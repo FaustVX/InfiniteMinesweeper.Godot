@@ -69,7 +69,7 @@ shadow_color = Color(0, 0, 0, 0.796078)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("MineField", "Camera", "Label", "ShowRemainingMines", "ZoomIn", "ZoomOut", "Restart")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
 Camera = NodePath("Camera2D")
@@ -78,6 +78,7 @@ Label = NodePath("CanvasLayer/Label")
 ShowRemainingMines = NodePath("CanvasLayer/Show Remaining Mines")
 ZoomIn = NodePath("CanvasLayer/Zoom Container/Zoom In")
 ZoomOut = NodePath("CanvasLayer/Zoom Container/Zoom Out")
+Restart = NodePath("CanvasLayer/Zoom Container/Restart")
 
 [node name="Minefield" type="TileMapLayer" parent="World"]
 texture_filter = 1
@@ -123,3 +124,7 @@ text = "Zoom In"
 [node name="Zoom Out" type="Button" parent="World/CanvasLayer/Zoom Container"]
 layout_mode = 2
 text = "Zoom Out"
+
+[node name="Restart" type="Button" parent="World/CanvasLayer/Zoom Container"]
+layout_mode = 2
+text = "Restart"
