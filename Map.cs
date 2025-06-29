@@ -83,7 +83,13 @@ public partial class Map : Node2D
 
         void ProcessAction(InputEvent @event)
         {
-            if (Camera.IsMouseDragging || !@event.IsActionType() || (@event is InputEventMouse && GetTree().CurrentScene.GetAllChildren<Control>().Any(static c => c.HasMouseOver)))
+            if (Camera.IsMouseDragging)
+            {
+                QueueRedraw();
+                return;
+            }
+
+            if (!@event.IsActionType() || (@event is InputEventMouse && GetTree().CurrentScene.GetAllChildren<Control>().Any(static c => c.HasMouseOver)))
                 return;
             var localPosition = MineField.GlobalToMap(GetGlobalMousePosition());
             if (@event.IsExplore)

@@ -78,12 +78,6 @@ outline_color = Color(0.5, 0.5, 0.5, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.498039)
 
-[sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
-physical_keycode = 4194325
-
-[sub_resource type="Shortcut" id="Shortcut_epypp"]
-events = [SubResource("InputEventKey_0e48y")]
-
 [sub_resource type="InputEventKey" id="InputEventKey_rj586"]
 ctrl_pressed = true
 key_label = 82
@@ -97,6 +91,12 @@ key_label = 71
 
 [sub_resource type="Shortcut" id="Shortcut_hqns4"]
 events = [SubResource("InputEventKey_ir8iy")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
+physical_keycode = 4194325
+
+[sub_resource type="Shortcut" id="Shortcut_epypp"]
+events = [SubResource("InputEventKey_0e48y")]
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("MineField", "Camera")]
 script = ExtResource("2_0e48y")
@@ -126,13 +126,6 @@ label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
 script = ExtResource("3_epypp")
 
-[node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer"]
-offset_right = 24.0
-offset_bottom = 24.0
-shortcut = SubResource("Shortcut_epypp")
-text = "Show Remaining Mines"
-script = ExtResource("3_epypp")
-
 [node name="Control Container" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 3
 anchor_left = 1.0
@@ -147,16 +140,19 @@ alignment = 2
 
 [node name="Zoom In" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
+size_flags_vertical = 3
 text = "Zoom In"
 script = ExtResource("3_epypp")
 
 [node name="Zoom Out" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
+size_flags_vertical = 3
 text = "Zoom Out"
 script = ExtResource("3_epypp")
 
 [node name="Restart" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
+size_flags_vertical = 3
 shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
 script = ExtResource("3_epypp")
@@ -168,20 +164,28 @@ Scene = "uid://dw0fkougnxv5y"
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/Control Container"]
 visible = false
 layout_mode = 2
+size_flags_vertical = 3
 disabled = true
 shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
 script = ExtResource("3_epypp")
 
+[node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/Control Container"]
+layout_mode = 2
+size_flags_vertical = 3
+shortcut = SubResource("Shortcut_epypp")
+text = "Show Remaining Mines"
+script = ExtResource("3_epypp")
+
 [connection signal="Info" from="." to="CanvasLayer/Label" method="set_text"]
 [connection signal="Resize" from="." to="CanvasLayer/Label" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Show Remaining Mines" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/Control Container/Show Remaining Mines" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom In" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom Out" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Restart" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/CheckButton" method="ResizeControl"]
-[connection signal="toggled" from="CanvasLayer/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
 [connection signal="toggled" from="CanvasLayer/Control Container/CheckButton" to="." method="GroupsHandler"]
+[connection signal="toggled" from="CanvasLayer/Control Container/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]
