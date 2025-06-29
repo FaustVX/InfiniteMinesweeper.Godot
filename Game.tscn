@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=25 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
 [ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://Resize.cs" id="3_epypp"]
+[ext_resource type="Texture2D" uid="uid://c3nmqcn0crray" path="res://blank8.png" id="3_t88pq"]
 [ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://LoadMainMenu.cs" id="4_sb48q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
@@ -63,6 +64,21 @@ texture = ExtResource("2_epypp")
 sources/0 = SubResource("TileSetAtlasSource_0hol4")
 sources/1 = SubResource("TileSetAtlasSource_epypp")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r0x5m"]
+texture = ExtResource("3_t88pq")
+texture_region_size = Vector2i(1, 1)
+0:0/next_alternative_id = 3
+0:0/0 = 0
+0:0/0/modulate = Color(1, 0, 0, 1)
+1:0/0 = 0
+1:0/0/modulate = Color(1, 1, 0, 1)
+2:0/0 = 0
+2:0/0/modulate = Color(0, 1, 0, 1)
+
+[sub_resource type="TileSet" id="TileSet_sb48q"]
+tile_size = Vector2i(1, 1)
+sources/0 = SubResource("TileSetAtlasSource_r0x5m")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0e48y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.498039)
 corner_radius_bottom_right = 10
@@ -78,6 +94,20 @@ outline_color = Color(0.5, 0.5, 0.5, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.498039)
 
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_t88pq"]
+device = -1
+button_index = 4
+
+[sub_resource type="Shortcut" id="Shortcut_r0x5m"]
+events = [SubResource("InputEventMouseButton_t88pq")]
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_3mrqo"]
+device = -1
+button_index = 5
+
+[sub_resource type="Shortcut" id="Shortcut_joorw"]
+events = [SubResource("InputEventMouseButton_3mrqo")]
+
 [sub_resource type="InputEventKey" id="InputEventKey_rj586"]
 ctrl_pressed = true
 key_label = 82
@@ -92,15 +122,23 @@ key_label = 71
 [sub_resource type="Shortcut" id="Shortcut_hqns4"]
 events = [SubResource("InputEventKey_ir8iy")]
 
+[sub_resource type="InputEventKey" id="InputEventKey_t88pq"]
+ctrl_pressed = true
+key_label = 67
+
+[sub_resource type="Shortcut" id="Shortcut_3mrqo"]
+events = [SubResource("InputEventKey_t88pq")]
+
 [sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
 physical_keycode = 4194325
 
 [sub_resource type="Shortcut" id="Shortcut_epypp"]
 events = [SubResource("InputEventKey_0e48y")]
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("MineField", "Camera")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("MineField", "GroupsField", "Camera")]
 script = ExtResource("2_0e48y")
 MineField = NodePath("Minefield")
+GroupsField = NodePath("Groups")
 Camera = NodePath("Camera2D")
 MinesPerChunk = 15
 
@@ -108,6 +146,12 @@ MinesPerChunk = 15
 texture_filter = 1
 texture_repeat = 2
 tile_set = SubResource("TileSet_q6r6c")
+
+[node name="Groups" type="TileMapLayer" parent="."]
+modulate = Color(1, 1, 1, 0.25098)
+texture_filter = 1
+scale = Vector2(16, 16)
+tile_set = SubResource("TileSet_sb48q")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -141,12 +185,14 @@ alignment = 2
 [node name="Zoom In" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
+shortcut = SubResource("Shortcut_r0x5m")
 text = "Zoom In"
 script = ExtResource("3_epypp")
 
 [node name="Zoom Out" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
+shortcut = SubResource("Shortcut_joorw")
 text = "Zoom Out"
 script = ExtResource("3_epypp")
 
@@ -161,14 +207,18 @@ script = ExtResource("3_epypp")
 script = ExtResource("4_sb48q")
 Scene = "uid://dw0fkougnxv5y"
 
-[node name="CheckButton" type="CheckButton" parent="CanvasLayer/Control Container"]
-visible = false
+[node name="Check Groups" type="CheckButton" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
-disabled = true
 shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
 script = ExtResource("3_epypp")
+
+[node name="Clear Groups" type="Button" parent="CanvasLayer/Control Container"]
+visible = false
+layout_mode = 2
+shortcut = SubResource("Shortcut_3mrqo")
+text = "Clear Groups"
 
 [node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/Control Container"]
 layout_mode = 2
@@ -179,13 +229,15 @@ script = ExtResource("3_epypp")
 
 [connection signal="Info" from="." to="CanvasLayer/Label" method="set_text"]
 [connection signal="Resize" from="." to="CanvasLayer/Label" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Show Remaining Mines" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom In" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom Out" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Restart" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/CheckButton" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/Control Container/Check Groups" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/Control Container/Show Remaining Mines" method="ResizeControl"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
-[connection signal="toggled" from="CanvasLayer/Control Container/CheckButton" to="." method="GroupsHandler"]
+[connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="." method="GroupsHandler"]
+[connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="CanvasLayer/Control Container/Clear Groups" method="set_visible"]
+[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]

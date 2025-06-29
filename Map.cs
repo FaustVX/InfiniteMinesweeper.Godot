@@ -11,6 +11,8 @@ public partial class Map : Node2D
     [Export]
     public required TileMapLayer MineField { get; set; }
     [Export]
+    public required TileMapLayer GroupsField { get; set; }
+    [Export]
     public required Camera2D Camera { get; set; }
     [Export]
     public required int Seed
@@ -28,6 +30,8 @@ public partial class Map : Node2D
 
     private Game _game;
     private bool _showRemainingMines;
+    private bool _showGroups;
+    private HashSet<Pos>[] _groups;
 
     public override void _Ready()
     {
@@ -64,7 +68,8 @@ public partial class Map : Node2D
 
     public void GroupsHandler(bool toggledOn)
     {
-        throw new NotImplementedException();
+        _showGroups = toggledOn;
+        QueueRedraw();
     }
 
     public void ToggleShowRemainingMines(bool showed)
@@ -91,16 +96,25 @@ public partial class Map : Node2D
 
             if (!@event.IsActionType() || (@event is InputEventMouse && GetTree().CurrentScene.GetAllChildren<Control>().Any(static c => c.HasMouseOver)))
                 return;
-            var localPosition = MineField.GlobalToMap(GetGlobalMousePosition());
+            var localPosition = MineField.GlobalToMap(GetGlobalMousePosition()).AsPos;
+
             if (@event.IsExplore)
-                try
+                if (_showGroups)
                 {
-                    _game.Explore(localPosition.AsPos);
+                    if (this.AddPos(localPosition))
+                        _groups = _game.GetCollidingGroups(this.Pos1, this.Pos2);
+                    else
+                        _groups = null;
                 }
-                catch (ExplodeException)
-                { }
-            else if (@event.IsFlag)
-                _game.ToggleFlag(localPosition.AsPos);
+                else
+                    try
+                    {
+                        _game.Explore(localPosition);
+                    }
+                    catch (ExplodeException)
+                    { }
+            else if (!_showGroups && @event.IsFlag)
+                _game.ToggleFlag(localPosition);
             else if (@event.IsZoomIn)
                 ZoomAtCursor(zoomIn: true);
             else if (@event.IsZoomOut)
@@ -124,7 +138,29 @@ public partial class Map : Node2D
             {
                 ref var cell = ref _game.GetCell(new(x, y), ChunkState.NotGenerated);
                 MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
+                switch (_groups)
+                {
+                    case [var intersect]:
+                        if (intersect.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(1, 0));
+                        break;
+                    case [var g1, var g2]:
+                        if (g1.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(0, 0));
+                        else if (g2.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(2, 0));
+                        break;
+                    case [var g1, var g2, var intersect]:
+                        if (g1.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(0, 0));
+                        else if (intersect.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(1, 0));
+                        else if (g2.Contains(new(x, y)))
+                            GroupsField.SetCell(new(x, y), 0, new(2, 0));
+                        break;
+                }
             }
+        _groups = null;
     }
 
     private void ZoomAtCursor(bool zoomIn)
@@ -197,7 +233,39 @@ file static class Ext
     }
 }
 
-file static class CameraExt
+file static class GameSelectExt
+{
+    extension(Map map)
+    {
+        public Pos Pos1
+        => _table.GetOrCreateValue(map).Pos1 ?? throw new NotSupportedException();
+        public Pos Pos2
+        => _table.GetOrCreateValue(map).Pos2 ?? throw new NotSupportedException();
+
+        public bool AddPos(Pos pos)
+        {
+            var info = _table.GetOrCreateValue(map);
+            if (info.Pos1 is not null && info.Pos2 is null)
+            {
+                info.Pos2 = pos;
+                return true;
+            }
+            info.Pos1 = pos;
+            info.Pos2 = null;
+            return false;
+        }
+    }
+
+    private static readonly ConditionalWeakTable<Map, Info> _table = [];
+
+    private sealed class Info
+    {
+        public Pos? Pos1 { get; set; }
+        public Pos? Pos2 { get; set; }
+    }
+}
+
+file static class CameraDraggingExt
 {
     extension(Camera2D camera)
     {
@@ -218,7 +286,7 @@ file static class CameraExt
     private sealed class Info
     {
         public bool IsMouseDragging { get; set; }
-        public bool IsMousePressed{ get; set; }
+        public bool IsMousePressed { get; set; }
     }
 }
 
