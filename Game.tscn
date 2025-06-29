@@ -115,19 +115,19 @@ key_label = 82
 [sub_resource type="Shortcut" id="Shortcut_4d7sh"]
 events = [SubResource("InputEventKey_rj586")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_ir8iy"]
-ctrl_pressed = true
-key_label = 71
-
-[sub_resource type="Shortcut" id="Shortcut_hqns4"]
-events = [SubResource("InputEventKey_ir8iy")]
-
 [sub_resource type="InputEventKey" id="InputEventKey_t88pq"]
 ctrl_pressed = true
 key_label = 67
 
 [sub_resource type="Shortcut" id="Shortcut_3mrqo"]
 events = [SubResource("InputEventKey_t88pq")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ir8iy"]
+ctrl_pressed = true
+key_label = 71
+
+[sub_resource type="Shortcut" id="Shortcut_hqns4"]
+events = [SubResource("InputEventKey_ir8iy")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_0e48y"]
 physical_keycode = 4194325
@@ -207,6 +207,12 @@ script = ExtResource("3_epypp")
 script = ExtResource("4_sb48q")
 Scene = "uid://dw0fkougnxv5y"
 
+[node name="Clear Groups" type="Button" parent="CanvasLayer/Control Container"]
+visible = false
+layout_mode = 2
+shortcut = SubResource("Shortcut_3mrqo")
+text = "Clear Groups"
+
 [node name="Check Groups" type="CheckButton" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -214,15 +220,10 @@ shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
 script = ExtResource("3_epypp")
 
-[node name="Clear Groups" type="Button" parent="CanvasLayer/Control Container"]
-visible = false
-layout_mode = 2
-shortcut = SubResource("Shortcut_3mrqo")
-text = "Clear Groups"
-
 [node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
+button_pressed = true
 shortcut = SubResource("Shortcut_epypp")
 text = "Show Remaining Mines"
 script = ExtResource("3_epypp")
@@ -237,7 +238,7 @@ script = ExtResource("3_epypp")
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="." method="GroupsHandler"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="CanvasLayer/Control Container/Clear Groups" method="set_visible"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]

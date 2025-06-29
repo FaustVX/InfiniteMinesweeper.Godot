@@ -29,7 +29,7 @@ public partial class Map : Node2D
     public delegate void InfoEventHandler(string message);
 
     private Game _game;
-    private bool _showRemainingMines;
+    private bool _showRemainingMines = true;
     private bool _showGroups;
     private HashSet<Pos>[] _groups;
 
