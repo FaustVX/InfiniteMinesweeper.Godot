@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dw0fkougnxv5y"]
 
 [ext_resource type="Script" uid="uid://n6vx7dscw73y" path="res://TemplatedText.cs" id="1_i26rj"]
-[ext_resource type="Script" uid="uid://cn0s0lf8h5rjp" path="res://LoadScene.cs" id="2_h7a2f"]
+[ext_resource type="Script" uid="uid://bwwat7twp7ac6" path="res://LoadGame.cs" id="2_eiy7p"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -17,6 +17,10 @@ anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
+offset_left = 63.0
+offset_top = -60.0
+offset_right = -63.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -52,9 +56,10 @@ allow_greater = true
 [node name="Button" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("Seed", "MinesPerChunk")]
 layout_mode = 2
 text = "Create"
-script = ExtResource("2_h7a2f")
-Scene = "uid://i3rjt0vjpm75"
+script = ExtResource("2_eiy7p")
 Seed = NodePath("../SpinBox")
 MinesPerChunk = NodePath("../HBoxContainer/HSlider")
+Scene = "uid://i3rjt0vjpm75"
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
+[connection signal="pressed" from="VBoxContainer/Button" to="VBoxContainer/Button" method="OnPressed"]

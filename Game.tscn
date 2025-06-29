@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=16 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://Map.cs" id="2_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
 [ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://Resize.cs" id="3_epypp"]
+[ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://LoadMainMenu.cs" id="4_sb48q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
 texture = ExtResource("2_epypp")
@@ -160,6 +161,10 @@ shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
 script = ExtResource("3_epypp")
 
+[node name="Script1" type="Node2D" parent="CanvasLayer/Control Container/Restart"]
+script = ExtResource("4_sb48q")
+Scene = "uid://dw0fkougnxv5y"
+
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/Control Container"]
 visible = false
 layout_mode = 2
@@ -178,5 +183,5 @@ script = ExtResource("3_epypp")
 [connection signal="toggled" from="CanvasLayer/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="." method="RestartHandler"]
+[connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
 [connection signal="toggled" from="CanvasLayer/Control Container/CheckButton" to="." method="GroupsHandler"]
