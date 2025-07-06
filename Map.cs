@@ -77,7 +77,8 @@ public partial class Map : Node2D
 
     public void SaveHandler()
     {
-        Game.Save(new("saves/game1.json"));
+        using var stream = File.Create("saves/game1.json");
+        Game.Save(stream);
     }
 
     public void ToggleShowRemainingMines(bool showed)
@@ -91,7 +92,8 @@ public partial class Map : Node2D
         if (!Directory.Exists("saves"))
             Directory.CreateDirectory("saves");
         var index = this.IncrementSave();
-        Game.Save(new($"saves/autosave-{index}.json"));
+        using var stream = File.Create($"saves/autosave-{index}.json");
+        Game.Save(stream);
     }
 
     public override void _Input(InputEvent @event)

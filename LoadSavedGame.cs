@@ -9,7 +9,8 @@ public partial class LoadSavedGame : LoadScene
 	public void OnPressed()
 	{
 		var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
-		map.Game = Game.Load(new(File));
+		using (var stream = System.IO.File.OpenRead(File))
+			map.Game = Game.Load(stream);
 		ChangeSceneToNode(this, map);
 	}
 }
