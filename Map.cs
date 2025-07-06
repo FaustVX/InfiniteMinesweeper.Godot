@@ -22,20 +22,22 @@ public partial class Map : Node2D
     }
     [Export(PropertyHint.Range, "1, 50, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
+    public Game Game { get; set; }
+
 
     [Signal]
     public delegate void ResizeEventHandler(float scale);
     [Signal]
     public delegate void InfoEventHandler(string message);
 
-    private Game _game;
     private bool _showRemainingMines = true;
     private bool _showGroups;
     private HashSet<Pos>[] _groups;
 
     public override void _Ready()
     {
-        NewGame();
+        if (Game is null)
+            NewGame();
         if (OS.GetName() is "Android" or "iOS")
         {
             Camera.Zoom *= 4;
@@ -45,7 +47,7 @@ public partial class Map : Node2D
 
     private void NewGame()
     {
-        _game = new(Seed, MinesPerChunk);
+        Game = new(Seed, MinesPerChunk);
     }
 
     public void ZoomInHandler()
@@ -72,6 +74,11 @@ public partial class Map : Node2D
         QueueRedraw();
     }
 
+    public void SaveHandler()
+    {
+        Game.Save(new("game1.json"));
+    }
+
     public void ToggleShowRemainingMines(bool showed)
     {
         _showRemainingMines = showed;
@@ -83,7 +90,7 @@ public partial class Map : Node2D
         ProcessAction(@event);
         @event.ProcessDragging(Camera);
 
-        var chunk = _game.GetChunk(MineField.GlobalToMap(GetGlobalMousePosition()).AsPos.ToChunkPos(out _), ChunkState.NotGenerated);
+        var chunk = Game.GetChunk(MineField.GlobalToMap(GetGlobalMousePosition()).AsPos.ToChunkPos(out _), ChunkState.NotGenerated);
         EmitSignalInfo($"Remaining Mines: {chunk.RemainingMines}");
 
         void ProcessAction(InputEvent @event)
@@ -102,19 +109,19 @@ public partial class Map : Node2D
                 if (_showGroups)
                 {
                     if (this.AddPos(localPosition))
-                        _groups = _game.GetCollidingGroups(this.Pos1, this.Pos2);
+                        _groups = Game.GetCollidingGroups(this.Pos1, this.Pos2);
                     else
                         _groups = null;
                 }
                 else
                     try
                     {
-                        _game.Explore(localPosition);
+                        Game.Explore(localPosition);
                     }
                     catch (ExplodeException)
                     { }
             else if (!_showGroups && @event.IsFlag)
-                _game.ToggleFlag(localPosition);
+                Game.ToggleFlag(localPosition);
             else if (@event.IsZoomIn)
                 ZoomAtCursor(zoomIn: true);
             else if (@event.IsZoomOut)
@@ -136,8 +143,8 @@ public partial class Map : Node2D
         for (var x = cellTopLeft.X; x <= cellBottomRight.X; x++)
             for (var y = cellTopLeft.Y; y <= cellBottomRight.Y; y++)
             {
-                ref var cell = ref _game.GetCell(new(x, y), ChunkState.NotGenerated);
-                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(_game) : cell.Atlas);
+                ref var cell = ref Game.GetCell(new(x, y), ChunkState.NotGenerated);
+                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(Game) : cell.Atlas);
                 switch (_groups)
                 {
                     case [var intersect]:

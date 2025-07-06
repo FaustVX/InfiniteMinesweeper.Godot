@@ -1,11 +1,11 @@
 using Godot;
 
-public partial class LoadGame : LoadScene
+public partial class LoadNewGame : LoadScene
 {
 	[Export]
-	public required SpinBox Seed { get; set; }
+	public SpinBox Seed { get; set; }
 	[Export]
-	public required HSlider MinesPerChunk { get; set; }
+	public HSlider MinesPerChunk { get; set; }
 
 	public void OnPressed()
 	{

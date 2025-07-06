@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dw0fkougnxv5y"]
+[gd_scene load_steps=4 format=3 uid="uid://dw0fkougnxv5y"]
 
 [ext_resource type="Script" uid="uid://n6vx7dscw73y" path="res://TemplatedText.cs" id="1_i26rj"]
-[ext_resource type="Script" uid="uid://bwwat7twp7ac6" path="res://LoadGame.cs" id="2_eiy7p"]
+[ext_resource type="Script" uid="uid://ckx2hu87ctj2p" path="res://LoadNewGame.cs" id="2_h7a2f"]
+[ext_resource type="Script" uid="uid://bepl5ngdnh3aq" path="res://LoadSavedGame.cs" id="3_qoqlk"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -56,10 +57,22 @@ allow_greater = true
 [node name="Button" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("Seed", "MinesPerChunk")]
 layout_mode = 2
 text = "Create"
-script = ExtResource("2_eiy7p")
+script = ExtResource("2_h7a2f")
 Seed = NodePath("../SpinBox")
 MinesPerChunk = NodePath("../HBoxContainer/HSlider")
 Scene = "uid://i3rjt0vjpm75"
 
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Load Game"
+horizontal_alignment = 1
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Load"
+script = ExtResource("3_qoqlk")
+Scene = "uid://i3rjt0vjpm75"
+
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
 [connection signal="pressed" from="VBoxContainer/Button" to="VBoxContainer/Button" method="OnPressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="OnPressed"]

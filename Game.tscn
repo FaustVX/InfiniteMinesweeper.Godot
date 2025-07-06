@@ -196,6 +196,11 @@ shortcut = SubResource("Shortcut_joorw")
 text = "Zoom Out"
 script = ExtResource("3_epypp")
 
+[node name="Save" type="Button" parent="CanvasLayer/Control Container"]
+layout_mode = 2
+text = "Save"
+script = ExtResource("3_epypp")
+
 [node name="Restart" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -232,11 +237,13 @@ script = ExtResource("3_epypp")
 [connection signal="Resize" from="." to="CanvasLayer/Label" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom In" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom Out" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/Control Container/Save" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Restart" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Check Groups" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/Control Container/Show Remaining Mines" method="ResizeControl"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
+[connection signal="pressed" from="CanvasLayer/Control Container/Save" to="." method="SaveHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="." method="GroupsHandler"]
