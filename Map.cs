@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Godot;
@@ -76,13 +77,21 @@ public partial class Map : Node2D
 
     public void SaveHandler()
     {
-        Game.Save(new("game1.json"));
+        Game.Save(new("saves/game1.json"));
     }
 
     public void ToggleShowRemainingMines(bool showed)
     {
         _showRemainingMines = showed;
         QueueRedraw();
+    }
+
+    private void AutoSave()
+    {
+        if (!Directory.Exists("saves"))
+            Directory.CreateDirectory("saves");
+        var index = this.IncrementSave();
+        Game.Save(new($"saves/autosave-{index}.json"));
     }
 
     public override void _Input(InputEvent @event)
@@ -117,11 +126,15 @@ public partial class Map : Node2D
                     try
                     {
                         Game.Explore(localPosition);
+                        AutoSave();
                     }
                     catch (ExplodeException)
                     { }
             else if (!_showGroups && @event.IsFlag)
+            {
                 Game.ToggleFlag(localPosition);
+                AutoSave();
+            }
             else if (@event.IsZoomIn)
                 ZoomAtCursor(zoomIn: true);
             else if (@event.IsZoomOut)
@@ -269,6 +282,32 @@ file static class GameSelectExt
     {
         public Pos? Pos1 { get; set; }
         public Pos? Pos2 { get; set; }
+    }
+}
+
+file static class GameAutoSaveExt
+{
+    extension(Map map)
+    {
+        public int MaxAutosave
+        => _table.GetOrCreateValue(map).MaxAutosave;
+        public int LastSave
+        => _table.GetOrCreateValue(map).LastSave;
+
+        public int IncrementSave()
+        {
+            var info = _table.GetOrCreateValue(map);
+            info.LastSave++;
+            return info.LastSave %= info.MaxAutosave;
+        }
+    }
+
+    private static readonly ConditionalWeakTable<Map, Info> _table = [];
+
+    private sealed class Info
+    {
+        public int MaxAutosave { get; set; } = 15;
+        public int LastSave { get; set; }
     }
 }
 

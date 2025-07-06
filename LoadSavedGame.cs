@@ -4,7 +4,7 @@ using InfiniteMinesweeper;
 public partial class LoadSavedGame : LoadScene
 {
 	[Export(PropertyHint.GlobalSaveFile, "*.json")]
-	public string File { get; set; } = "game1.json";
+	public string File { get; set; } = "saves/game1.json";
 
 	public void OnPressed()
 	{
