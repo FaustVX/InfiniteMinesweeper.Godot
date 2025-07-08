@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Test1"
+config/name="InfiniteMinesweeper.Godot"
 run/main_scene="uid://dw0fkougnxv5y"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 boot_splash/show_image=false

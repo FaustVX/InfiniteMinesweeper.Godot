@@ -1,0 +1,3 @@
+[submodule "lib/InfiniteMinesweeper"]
+	path = lib/InfiniteMinesweeper
+	url = git@github.com:FaustVX/InfiniteMinesweeper.git

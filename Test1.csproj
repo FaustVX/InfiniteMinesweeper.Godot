@@ -5,6 +5,14 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\.NET\InfiniteMinesweeper\InfiniteMinesweeper.App\InfiniteMinesweeper.App.csproj" />
+    <ProjectReference Include="lib/InfiniteMinesweeper/InfiniteMinesweeper.App/InfiniteMinesweeper.App.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="android/**/*.cs" />
+    <None Include="android/**/*.cs" />
+    <Compile Remove=".godot/**/*.cs" />
+    <None Include=".godot/**/*.cs" />
+    <Compile Remove="lib/**/*.cs" />
+    <None Include="lib/**/*.cs" />
   </ItemGroup>
 </Project>

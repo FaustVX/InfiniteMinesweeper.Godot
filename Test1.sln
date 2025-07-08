@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test1", "Test1.csproj", "{90AE4DE9-6964-4324-A777-DF25FB51EB07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteMinesweeper.App", "..\..\.NET\InfiniteMinesweeper\InfiniteMinesweeper.App\InfiniteMinesweeper.App.csproj", "{49D90B8A-F0AB-4D06-BE5B-E2EFE81AC5CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteMinesweeper.App", "lib/InfiniteMinesweeper/InfiniteMinesweeper.App/InfiniteMinesweeper.App.csproj", "{49D90B8A-F0AB-4D06-BE5B-E2EFE81AC5CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
