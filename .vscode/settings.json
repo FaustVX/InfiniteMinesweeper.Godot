@@ -7,5 +7,5 @@
         "**/android": true,
         "**/bin": true
     },
-    "dotnet.defaultSolution": "Test1.sln"
+    "dotnet.defaultSolution": "InfiniteMinesweeper.Godot.sln"
 }
