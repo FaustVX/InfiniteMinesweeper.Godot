@@ -245,6 +245,7 @@ script = ExtResource("3_epypp")
 [connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Save" to="." method="SaveHandler"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="." method="ResetGroups"]
 [connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="." method="GroupsHandler"]
 [connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="CanvasLayer/Control Container/Clear Groups" method="set_visible"]
