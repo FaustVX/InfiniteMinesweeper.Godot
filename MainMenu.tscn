@@ -58,9 +58,9 @@ allow_greater = true
 layout_mode = 2
 text = "Create"
 script = ExtResource("2_h7a2f")
-Scene = "uid://i3rjt0vjpm75"
 Seed = NodePath("../SpinBox")
 MinesPerChunk = NodePath("../HBoxContainer/HSlider")
+Scene = "uid://i3rjt0vjpm75"
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2

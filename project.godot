@@ -22,7 +22,7 @@ window/handheld/orientation=1
 
 [dotnet]
 
-project/assembly_name="Test1"
+project/assembly_name="InfiniteMinesweeper.Godot"
 
 [input]
 
