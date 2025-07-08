@@ -81,6 +81,9 @@ public partial class Map : Node2D
         Game.Save(stream);
     }
 
+    public void ResetGroups()
+    => this.ResetPos();
+
     public void ToggleShowRemainingMines(bool showed)
     {
         _showRemainingMines = showed;
@@ -276,6 +279,9 @@ file static class GameSelectExt
             info.Pos2 = null;
             return false;
         }
+
+        public void ResetPos()
+        => _table.AddOrUpdate(map, new());
     }
 
     private static readonly ConditionalWeakTable<Map, Info> _table = [];
