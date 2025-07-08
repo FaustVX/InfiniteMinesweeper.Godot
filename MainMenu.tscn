@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dw0fkougnxv5y"]
 
-[ext_resource type="Script" uid="uid://n6vx7dscw73y" path="res://TemplatedText.cs" id="1_i26rj"]
-[ext_resource type="Script" uid="uid://ckx2hu87ctj2p" path="res://LoadNewGame.cs" id="2_h7a2f"]
-[ext_resource type="Script" uid="uid://bepl5ngdnh3aq" path="res://LoadSavedGame.cs" id="3_qoqlk"]
+[ext_resource type="Script" uid="uid://n6vx7dscw73y" path="res://src/TemplatedText.cs" id="1_i26rj"]
+[ext_resource type="Script" uid="uid://ckx2hu87ctj2p" path="res://src/LoadNewGame.cs" id="2_h7a2f"]
+[ext_resource type="Script" uid="uid://bepl5ngdnh3aq" path="res://src/LoadSavedGame.cs" id="3_qoqlk"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -58,9 +58,9 @@ allow_greater = true
 layout_mode = 2
 text = "Create"
 script = ExtResource("2_h7a2f")
+Scene = "uid://i3rjt0vjpm75"
 Seed = NodePath("../SpinBox")
 MinesPerChunk = NodePath("../HBoxContainer/HSlider")
-Scene = "uid://i3rjt0vjpm75"
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
