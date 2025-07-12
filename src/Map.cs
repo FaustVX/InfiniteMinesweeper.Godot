@@ -21,7 +21,7 @@ public partial class Map : Node2D
         get => field is 0 ? Random.Shared.Next() : field;
         set => field = value;
     }
-    [Export(PropertyHint.Range, "1, 50, or_greater")]
+    [Export(PropertyHint.Range, "7, 35, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
     public Game Game { get; set; }
 
