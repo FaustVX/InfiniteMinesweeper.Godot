@@ -14,7 +14,7 @@ config/name="InfiniteMinesweeper.Godot"
 run/main_scene="uid://dw0fkougnxv5y"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://resources/icon.svg"
 
 [display]
 

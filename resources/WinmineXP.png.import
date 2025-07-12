@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3nmqcn0crray"
-path="res://.godot/imported/blank8.png-a380680a49ab23f46f46b58c4aa246c9.ctex"
+uid="uid://cxhmvhbck5ij1"
+path="res://.godot/imported/WinmineXP.png-57dfad2a14eebf6e5c6d708ac4e6c530.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://blank8.png"
-dest_files=["res://.godot/imported/blank8.png-a380680a49ab23f46f46b58c4aa246c9.ctex"]
+source_file="res://resources/WinmineXP.png"
+dest_files=["res://.godot/imported/WinmineXP.png-57dfad2a14eebf6e5c6d708ac4e6c530.ctex"]
 
 [params]
 
