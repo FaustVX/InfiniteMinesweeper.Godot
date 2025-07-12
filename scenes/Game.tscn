@@ -1,11 +1,12 @@
-[gd_scene load_steps=26 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=27 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://src/Map.cs" id="1_s0nni"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://resources/WinmineXP.png" id="2_aug50"]
 [ext_resource type="Texture2D" uid="uid://c3nmqcn0crray" path="res://resources/blank8.png" id="3_kiw3p"]
 [ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://src/Resize.cs" id="4_400sg"]
-[ext_resource type="StyleBox" uid="uid://bkjgeqia3ngwx" path="res://styles/background_with_corner.tres" id="4_aug50"]
+[ext_resource type="StyleBox" uid="uid://bkjgeqia3ngwx" path="res://styles/background_top_middle.tres" id="4_aug50"]
 [ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://src/LoadMainMenu.cs" id="5_g4kob"]
+[ext_resource type="StyleBox" uid="uid://cf3m26hhhp64k" path="res://styles/background_bottom_right.tres" id="6_kiw3p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
 texture = ExtResource("2_aug50")
@@ -200,62 +201,66 @@ label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
 script = ExtResource("4_400sg")
 
-[node name="Control Container" type="VBoxContainer" parent="CanvasLayer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -86.0
-offset_top = -66.0
+offset_left = -207.0
+offset_top = -206.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/panel = ExtResource("6_kiw3p")
+
+[node name="Control Container" type="VBoxContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
 alignment = 2
 
-[node name="Zoom In" type="Button" parent="CanvasLayer/Control Container"]
+[node name="Zoom In" type="Button" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_r0x5m")
 text = "Zoom In"
 script = ExtResource("4_400sg")
 
-[node name="Zoom Out" type="Button" parent="CanvasLayer/Control Container"]
+[node name="Zoom Out" type="Button" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_joorw")
 text = "Zoom Out"
 script = ExtResource("4_400sg")
 
-[node name="Save" type="Button" parent="CanvasLayer/Control Container"]
+[node name="Save" type="Button" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 text = "Save"
 script = ExtResource("4_400sg")
 
-[node name="Restart" type="Button" parent="CanvasLayer/Control Container"]
+[node name="Restart" type="Button" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
 script = ExtResource("4_400sg")
 
-[node name="Script1" type="Node2D" parent="CanvasLayer/Control Container/Restart"]
+[node name="Script1" type="Node2D" parent="CanvasLayer/PanelContainer/Control Container/Restart"]
 script = ExtResource("5_g4kob")
 Scene = "uid://dw0fkougnxv5y"
 
-[node name="Clear Groups" type="Button" parent="CanvasLayer/Control Container"]
+[node name="Clear Groups" type="Button" parent="CanvasLayer/PanelContainer/Control Container"]
 visible = false
 layout_mode = 2
 shortcut = SubResource("Shortcut_3mrqo")
 text = "Clear Groups"
 
-[node name="Check Groups" type="CheckButton" parent="CanvasLayer/Control Container"]
+[node name="Check Groups" type="CheckButton" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
 script = ExtResource("4_400sg")
 
-[node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/Control Container"]
+[node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/PanelContainer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 button_pressed = true
@@ -265,18 +270,18 @@ script = ExtResource("4_400sg")
 
 [connection signal="Info" from="." to="CanvasLayer/Label" method="set_text"]
 [connection signal="Resize" from="." to="CanvasLayer/Label" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom In" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Zoom Out" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Save" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Restart" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Check Groups" method="ResizeControl"]
-[connection signal="Resize" from="." to="CanvasLayer/Control Container/Show Remaining Mines" method="ResizeControl"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Zoom In" to="." method="ZoomInHandler"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Save" to="." method="SaveHandler"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Restart" to="CanvasLayer/Control Container/Restart/Script1" method="OnPressed"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="." method="ResetGroups"]
-[connection signal="pressed" from="CanvasLayer/Control Container/Clear Groups" to="Groups" method="clear"]
-[connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="." method="GroupsHandler"]
-[connection signal="toggled" from="CanvasLayer/Control Container/Check Groups" to="CanvasLayer/Control Container/Clear Groups" method="set_visible"]
-[connection signal="toggled" from="CanvasLayer/Control Container/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Zoom In" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Zoom Out" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Save" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Restart" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Check Groups" method="ResizeControl"]
+[connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Show Remaining Mines" method="ResizeControl"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Zoom In" to="." method="ZoomInHandler"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Zoom Out" to="." method="ZoomOutHandler"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Save" to="." method="SaveHandler"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Restart" to="CanvasLayer/PanelContainer/Control Container/Restart/Script1" method="OnPressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Clear Groups" to="." method="ResetGroups"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Clear Groups" to="Groups" method="clear"]
+[connection signal="toggled" from="CanvasLayer/PanelContainer/Control Container/Check Groups" to="." method="GroupsHandler"]
+[connection signal="toggled" from="CanvasLayer/PanelContainer/Control Container/Check Groups" to="CanvasLayer/PanelContainer/Control Container/Clear Groups" method="set_visible"]
+[connection signal="toggled" from="CanvasLayer/PanelContainer/Control Container/Show Remaining Mines" to="." method="ToggleShowRemainingMines"]
