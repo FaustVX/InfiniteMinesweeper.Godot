@@ -162,7 +162,13 @@ public partial class Map : Node2D
             for (var y = cellTopLeft.Y; y <= cellBottomRight.Y; y++)
             {
                 ref var cell = ref Game.GetCell(new(x, y), ChunkState.NotGenerated);
-                MineField.SetCell(new(x, y), new Pos(x, y).ToChunkPos(out _).IsEven ? 1 : 0, _showRemainingMines ? cell.AtlasWithRemainingMines(Game) : cell.Atlas);
+                var sourceId = new Pos(x, y).ToChunkPos(out _) switch
+                {
+                    var p when Game.GetChunk(p, ChunkState.NotGenerated).HasExploded => 2,
+                    var p when p.IsEven => 1,
+                    _ => 0,
+                };
+                MineField.SetCell(new(x, y), sourceId, _showRemainingMines ? cell.AtlasWithRemainingMines(Game) : cell.Atlas);
                 switch (_groups)
                 {
                     case [var intersect]:
