@@ -1,13 +1,14 @@
 [gd_scene load_steps=25 format=3 uid="uid://i3rjt0vjpm75"]
 
-[ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://src/Map.cs" id="2_0e48y"]
-[ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_epypp"]
-[ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://src/Resize.cs" id="3_epypp"]
-[ext_resource type="Texture2D" uid="uid://c3nmqcn0crray" path="res://blank8.png" id="3_t88pq"]
-[ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://src/LoadMainMenu.cs" id="4_sb48q"]
+[ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://src/Map.cs" id="1_s0nni"]
+[ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://WinmineXP.png" id="2_aug50"]
+[ext_resource type="Texture2D" uid="uid://c3nmqcn0crray" path="res://blank8.png" id="3_kiw3p"]
+[ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://src/Resize.cs" id="4_400sg"]
+[ext_resource type="StyleBox" uid="uid://bkjgeqia3ngwx" path="res://styles/background_with_corner.tres" id="4_aug50"]
+[ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://src/LoadMainMenu.cs" id="5_g4kob"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
-texture = ExtResource("2_epypp")
+texture = ExtResource("2_aug50")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -26,7 +27,7 @@ texture = ExtResource("2_epypp")
 3:3/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
-texture = ExtResource("2_epypp")
+texture = ExtResource("2_aug50")
 0:0/0 = 0
 0:0/0/modulate = Color(0.75, 0.75, 0.75, 1)
 1:0/0 = 0
@@ -65,7 +66,7 @@ sources/0 = SubResource("TileSetAtlasSource_0hol4")
 sources/1 = SubResource("TileSetAtlasSource_epypp")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r0x5m"]
-texture = ExtResource("3_t88pq")
+texture = ExtResource("3_kiw3p")
 texture_region_size = Vector2i(1, 1)
 0:0/next_alternative_id = 3
 0:0/0 = 0
@@ -78,13 +79,6 @@ texture_region_size = Vector2i(1, 1)
 [sub_resource type="TileSet" id="TileSet_sb48q"]
 tile_size = Vector2i(1, 1)
 sources/0 = SubResource("TileSetAtlasSource_r0x5m")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0e48y"]
-bg_color = Color(0.6, 0.6, 0.6, 0.498039)
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 15.0
-expand_margin_right = 15.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_0e48y"]
 font_size = 20
@@ -136,7 +130,7 @@ physical_keycode = 4194325
 events = [SubResource("InputEventKey_0e48y")]
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("MineField", "GroupsField", "Camera")]
-script = ExtResource("2_0e48y")
+script = ExtResource("1_s0nni")
 MineField = NodePath("Minefield")
 GroupsField = NodePath("Groups")
 Camera = NodePath("Camera2D")
@@ -165,10 +159,10 @@ offset_left = -0.5
 offset_right = 0.5
 offset_bottom = 40.0
 grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_0e48y")
+theme_override_styles/normal = ExtResource("4_aug50")
 label_settings = SubResource("LabelSettings_0e48y")
 horizontal_alignment = 1
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Control Container" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 3
@@ -187,29 +181,29 @@ layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_r0x5m")
 text = "Zoom In"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Zoom Out" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_joorw")
 text = "Zoom Out"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Save" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 text = "Save"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Restart" type="Button" parent="CanvasLayer/Control Container"]
 layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_4d7sh")
 text = "Restart"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Script1" type="Node2D" parent="CanvasLayer/Control Container/Restart"]
-script = ExtResource("4_sb48q")
+script = ExtResource("5_g4kob")
 Scene = "uid://dw0fkougnxv5y"
 
 [node name="Clear Groups" type="Button" parent="CanvasLayer/Control Container"]
@@ -223,7 +217,7 @@ layout_mode = 2
 size_flags_vertical = 3
 shortcut = SubResource("Shortcut_hqns4")
 text = "Check Groups"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [node name="Show Remaining Mines" type="CheckBox" parent="CanvasLayer/Control Container"]
 layout_mode = 2
@@ -231,7 +225,7 @@ size_flags_vertical = 3
 button_pressed = true
 shortcut = SubResource("Shortcut_epypp")
 text = "Show Remaining Mines"
-script = ExtResource("3_epypp")
+script = ExtResource("4_400sg")
 
 [connection signal="Info" from="." to="CanvasLayer/Label" method="set_text"]
 [connection signal="Resize" from="." to="CanvasLayer/Label" method="ResizeControl"]
