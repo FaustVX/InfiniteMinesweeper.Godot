@@ -102,12 +102,12 @@ public partial class Map : Node2D
 
             if (!@event.IsActionType() || (@event is InputEventMouse && GetTree().CurrentScene.GetAllChildren<Control>().Any(static c => c.HasMouseOver)))
                 return;
-            var localPosition = MineField.GlobalToMap(GetGlobalMousePosition()).AsPos;
+            var localCellPosition = MineField.GlobalToMap(GetGlobalMousePosition()).AsPos;
 
             if (@event.IsExplore)
                 if (_showGroups)
                 {
-                    if (this.AddPos(localPosition))
+                    if (this.AddPos(localCellPosition))
                         _groups = Game.GetCollidingGroups(this.Pos1, this.Pos2);
                     else
                         _groups = null;
@@ -115,16 +115,22 @@ public partial class Map : Node2D
                 else
                     try
                     {
-                        Game.Explore(localPosition);
+                        Game.Explore(localCellPosition);
                         AutoSave();
                     }
                     catch (ExplodeException)
                     { }
-            else if (!_showGroups && @event.IsFlag)
-            {
-                Game.ToggleFlag(localPosition);
-                AutoSave();
-            }
+            else if (!_showGroups)
+                if (@event.IsFlag)
+                {
+                    Game.ToggleFlag(localCellPosition);
+                    AutoSave();
+                }
+                else if (@event.IsExploreChunk)
+                {
+                    Game.TryClearChunk(localCellPosition.ToChunkPos(out _));
+                    AutoSave();
+                }
             QueueRedraw();
         }
     }

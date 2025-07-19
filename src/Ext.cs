@@ -11,6 +11,7 @@ public static class Ext
     extension(InputEvent ev)
     {
         public bool IsExplore => ev.IsActionReleased("Explore", true);
+        public bool IsExploreChunk => ev.IsActionReleased("ExploreChunk", true);
         public bool IsFlag => ev.IsActionReleased("Flag", true);
         public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true);
         public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true);
