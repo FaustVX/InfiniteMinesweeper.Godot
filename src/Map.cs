@@ -95,6 +95,8 @@ public partial class Map : Node2D
 
     public void SaveHandler()
     {
+        if (!Directory.Exists("saves"))
+            Directory.CreateDirectory("save");
         using var stream = File.Create("saves/game1.json");
         Game.Save(stream);
     }

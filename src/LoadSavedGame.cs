@@ -6,7 +6,14 @@ public partial class LoadSavedGame : LoadScene
 	[Export(PropertyHint.GlobalSaveFile, "*.json")]
 	public string File { get; set; } = "saves/game1.json";
 
-	public void OnPressed()
+	[Signal]
+	public delegate void FileDoNotExistEventHandler(bool value);
+
+    public override void _Process(double delta)
+	=> EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
+
+
+    public void OnPressed()
 	{
 		var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
 		using (var stream = System.IO.File.OpenRead(File))

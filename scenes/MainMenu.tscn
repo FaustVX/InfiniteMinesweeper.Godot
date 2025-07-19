@@ -75,4 +75,5 @@ Scene = "uid://i3rjt0vjpm75"
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
 [connection signal="pressed" from="VBoxContainer/Button" to="VBoxContainer/Button" method="OnPressed"]
+[connection signal="FileDoNotExist" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="set_disabled"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="OnPressed"]
