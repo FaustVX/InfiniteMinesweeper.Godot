@@ -13,11 +13,19 @@ public partial class LoadSavedGame : LoadScene
 	=> EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
 
 
-    public void OnPressed()
+	public void OnPressed()
 	{
-		var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
-		using (var stream = System.IO.File.OpenRead(File))
-			map.Game = Game.Load(stream);
-		ChangeSceneToNode(this, map);
+		try
+		{
+			EmitSignalLoading(true);
+			var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
+			using (var stream = System.IO.File.OpenRead(File))
+				map.Game = Game.Load(stream);
+			ChangeSceneToNode(this, map);
+		}
+		finally
+		{
+			EmitSignalLoading(false);
+		}
 	}
 }

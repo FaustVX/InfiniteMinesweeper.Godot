@@ -30,7 +30,7 @@ layout_mode = 2
 text = "New Game"
 horizontal_alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="VBoxContainer"]
+[node name="Seed" type="SpinBox" parent="VBoxContainer"]
 layout_mode = 2
 min_value = -2e+09
 max_value = 2e+09
@@ -54,11 +54,11 @@ max_value = 50.0
 value = 15.0
 allow_greater = true
 
-[node name="Button" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("Seed", "MinesPerChunk")]
+[node name="Create" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("Seed", "MinesPerChunk")]
 layout_mode = 2
 text = "Create"
 script = ExtResource("2_ow34m")
-Seed = NodePath("../SpinBox")
+Seed = NodePath("../Seed")
 MinesPerChunk = NodePath("../HBoxContainer/HSlider")
 Scene = "uid://i3rjt0vjpm75"
 
@@ -67,13 +67,17 @@ layout_mode = 2
 text = "Load Game"
 horizontal_alignment = 1
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="Load" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Load"
 script = ExtResource("3_l72w3")
 Scene = "uid://i3rjt0vjpm75"
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
-[connection signal="pressed" from="VBoxContainer/Button" to="VBoxContainer/Button" method="OnPressed"]
-[connection signal="FileDoNotExist" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="set_disabled"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="OnPressed"]
+[connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Create" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Load" method="set_disabled"]
+[connection signal="pressed" from="VBoxContainer/Create" to="VBoxContainer/Create" method="OnPressed"]
+[connection signal="FileDoNotExist" from="VBoxContainer/Load" to="VBoxContainer/Load" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Load" to="VBoxContainer/Create" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Load" to="VBoxContainer/Load" method="set_disabled"]
+[connection signal="pressed" from="VBoxContainer/Load" to="VBoxContainer/Load" method="OnPressed"]

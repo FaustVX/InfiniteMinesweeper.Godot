@@ -9,9 +9,17 @@ public partial class LoadNewGame : LoadScene
 
 	public void OnPressed()
 	{
-		var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
-		map.Seed = (int)Seed.Value;
-		map.MinesPerChunk = (int)MinesPerChunk.Value;
-		ChangeSceneToNode(this, map);
+		try
+		{
+			EmitSignalLoading(true);
+			var map = ResourceLoader.Load<PackedScene>(Scene).Instantiate<Map>();
+			map.Seed = (int)Seed.Value;
+			map.MinesPerChunk = (int)MinesPerChunk.Value;
+			ChangeSceneToNode(this, map);
+		}
+		finally
+		{
+			EmitSignalLoading(false);
+		}
 	}
 }
