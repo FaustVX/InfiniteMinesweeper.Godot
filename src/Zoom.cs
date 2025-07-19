@@ -12,11 +12,18 @@ public partial class Zoom : Camera2D
 	[Export]
 	public float ZoomOutFactor { get; set; } = .75f;
 
+	[Signal]
+	public delegate void IsMaxZoomInEventHandler(bool isMax);
+	[Signal]
+	public delegate void IsMaxZoomOutEventHandler(bool isMin);
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		var x = Math.Clamp(Zoom.X, MinZoom, MaxZoom);
 		var y = Math.Clamp(Zoom.Y, MinZoom, MaxZoom);
+		EmitSignalIsMaxZoomOut(x <= MinZoom);
+		EmitSignalIsMaxZoomIn(x >= MaxZoom);
 		Zoom = new(x, y);
 	}
 
@@ -28,7 +35,6 @@ public partial class Zoom : Camera2D
 			ZoomOutAtCursor();
 	}
 
-
 	public void ZoomAtCursor(bool zoomIn)
 	{
 		// https://forum.godotengine.org/t/how-to-zoom-camera-to-mouse/37348/2
@@ -38,9 +44,15 @@ public partial class Zoom : Camera2D
 		Position += mouseWorldPos - newMouseWorldPos;
 	}
 
-	public void ZoomInAtCursor()
-	=> ZoomAtCursor(true);
+    public void ZoomInAtCursor()
+    {
+		if (Zoom.X < MaxZoom)
+        	ZoomAtCursor(true);
+    }
 
-	public void ZoomOutAtCursor()
-	=> ZoomAtCursor(false);
+    public void ZoomOutAtCursor()
+    {
+		if (Zoom.X > MinZoom)
+	        ZoomAtCursor(false);
+    }
 }

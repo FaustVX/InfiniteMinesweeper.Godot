@@ -188,6 +188,7 @@ tile_set = SubResource("TileSet_sb48q")
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("4_g4kob")
 MinZoom = 0.3
+MaxZoom = 10.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -279,6 +280,8 @@ script = ExtResource("4_400sg")
 [connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Restart" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Check Groups" method="ResizeControl"]
 [connection signal="Resize" from="." to="CanvasLayer/PanelContainer/Control Container/Show Remaining Mines" method="ResizeControl"]
+[connection signal="IsMaxZoomIn" from="Camera2D" to="CanvasLayer/PanelContainer/Control Container/Zoom In" method="set_disabled"]
+[connection signal="IsMaxZoomOut" from="Camera2D" to="CanvasLayer/PanelContainer/Control Container/Zoom Out" method="set_disabled"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Zoom In" to="." method="queue_redraw"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Zoom In" to="Camera2D" method="ZoomAtCursor" binds= [true]]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/Control Container/Zoom Out" to="." method="queue_redraw"]
