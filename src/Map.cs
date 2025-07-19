@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Godot;
 using InfiniteMinesweeper;
 
@@ -24,7 +22,6 @@ public partial class Map : Node2D
     [Export(PropertyHint.Range, "7, 35, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
     public Game Game { get; set; }
-
 
     [Signal]
     public delegate void ResizeEventHandler(float scale);
@@ -49,18 +46,6 @@ public partial class Map : Node2D
     private void NewGame()
     {
         Game = new(Seed, MinesPerChunk);
-    }
-
-    public void ZoomInHandler()
-    {
-        ZoomAtCursor(true);
-        QueueRedraw();
-    }
-
-    public void ZoomOutHandler()
-    {
-        ZoomAtCursor(false);
-        QueueRedraw();
     }
 
     public void RestartHandler()
@@ -140,10 +125,6 @@ public partial class Map : Node2D
                 Game.ToggleFlag(localPosition);
                 AutoSave();
             }
-            else if (@event.IsZoomIn)
-                ZoomAtCursor(zoomIn: true);
-            else if (@event.IsZoomOut)
-                ZoomAtCursor(zoomIn: false);
             QueueRedraw();
         }
     }
@@ -192,14 +173,5 @@ public partial class Map : Node2D
                 }
             }
         _groups = null;
-    }
-
-    private void ZoomAtCursor(bool zoomIn)
-    {
-        // https://forum.godotengine.org/t/how-to-zoom-camera-to-mouse/37348/2
-        var mouseWorldPos = GetGlobalMousePosition();
-        Camera.Zoom *= zoomIn ? 1.25f : 0.8f;
-        var newMouseWorldPos = GetGlobalMousePosition();
-        Camera.Position += mouseWorldPos - newMouseWorldPos;
     }
 }
