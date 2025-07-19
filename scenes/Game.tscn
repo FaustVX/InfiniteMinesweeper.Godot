@@ -1,10 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=28 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://src/Map.cs" id="1_s0nni"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://resources/WinmineXP.png" id="2_aug50"]
 [ext_resource type="Texture2D" uid="uid://c3nmqcn0crray" path="res://resources/blank8.png" id="3_kiw3p"]
 [ext_resource type="Script" uid="uid://kxuip8imgkwk" path="res://src/Resize.cs" id="4_400sg"]
 [ext_resource type="StyleBox" uid="uid://bkjgeqia3ngwx" path="res://styles/background_top_middle.tres" id="4_aug50"]
+[ext_resource type="Script" uid="uid://crlygx805cyv6" path="res://src/Zoom.cs" id="4_g4kob"]
 [ext_resource type="Script" uid="uid://xjhi7gqd24bv" path="res://src/LoadMainMenu.cs" id="5_g4kob"]
 [ext_resource type="StyleBox" uid="uid://cf3m26hhhp64k" path="res://styles/background_bottom_right.tres" id="6_kiw3p"]
 
@@ -185,6 +186,8 @@ scale = Vector2(16, 16)
 tile_set = SubResource("TileSet_sb48q")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_g4kob")
+MinZoom = 0.3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
