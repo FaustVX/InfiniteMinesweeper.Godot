@@ -21,6 +21,39 @@ public partial class Map : Node2D
     }
     [Export(PropertyHint.Range, "7, 35, or_greater")]
     public required int MinesPerChunk { get; set; } = 10;
+    [Export, ExportGroup("Shortcuts", prefix: "Shortcut")]
+    public Shortcut ShortcutExplore { get; set; } = new()
+    {
+        Events = 
+        {
+            new InputEventMouseButton()
+            {
+                ButtonIndex = MouseButton.Left
+            }
+        }
+    };
+    [Export]
+    public Shortcut ShortcutExploreChunk { get; set; } = new()
+    {
+        Events = 
+        {
+            new InputEventMouseButton()
+            {
+                ButtonIndex = MouseButton.Middle
+            }
+        }
+    };
+    [Export]
+    public Shortcut ShortcutToggleFlag { get; set; } = new()
+    {
+        Events = 
+        {
+            new InputEventMouseButton()
+            {
+                ButtonIndex = MouseButton.Right
+            }
+        }
+    };
     public Game Game { get; set; }
 
     [Signal]
@@ -104,7 +137,7 @@ public partial class Map : Node2D
                 return;
             var localCellPosition = MineField.GlobalToMap(GetGlobalMousePosition()).AsPos;
 
-            if (@event.IsExplore)
+            if (ShortcutExplore.IsReleased(@event))
                 if (_showGroups)
                 {
                     if (this.AddPos(localCellPosition))
@@ -121,12 +154,12 @@ public partial class Map : Node2D
                     catch (ExplodeException)
                     { }
             else if (!_showGroups)
-                if (@event.IsFlag)
+                if (ShortcutToggleFlag.IsReleased(@event))
                 {
                     Game.ToggleFlag(localCellPosition);
                     AutoSave();
                 }
-                else if (@event.IsExploreChunk)
+                else if (ShortcutExploreChunk.IsReleased(@event))
                 {
                     Game.TryClearChunk(localCellPosition.ToChunkPos(out _));
                     AutoSave();

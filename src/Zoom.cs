@@ -11,6 +11,26 @@ public partial class Zoom : Camera2D
 	public float ZoomInFactor { get; set; } = 1.25f;
 	[Export]
 	public float ZoomOutFactor { get; set; } = .75f;
+    [Export, ExportGroup("Shortcuts", prefix: "Shortcut")]
+	public Shortcut ShortcutZoomIn { get; set; } = new Shortcut()
+	{
+		Events = {
+			new InputEventMouseButton()
+			{
+				ButtonIndex = MouseButton.WheelUp
+			}
+		}
+	};
+    [Export]
+    public Shortcut ShortcutZoomOut { get; set; } = new Shortcut()
+	{
+		Events = {
+			new InputEventMouseButton()
+			{
+				ButtonIndex = MouseButton.WheelDown
+			}
+		}
+	};
 
 	[Signal]
 	public delegate void IsMaxZoomInEventHandler(bool isMax);
@@ -29,9 +49,9 @@ public partial class Zoom : Camera2D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsZoomIn)
+		if (ShortcutZoomIn.IsPressed(@event))
 			ZoomInAtCursor();
-		else if (@event.IsZoomOut)
+		else if (ShortcutZoomOut.IsPressed(@event))
 			ZoomOutAtCursor();
 	}
 

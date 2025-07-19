@@ -10,11 +10,6 @@ public static class Ext
 {
     extension(InputEvent ev)
     {
-        public bool IsExplore => ev.IsActionReleased("Explore", true);
-        public bool IsExploreChunk => ev.IsActionReleased("ExploreChunk", true);
-        public bool IsFlag => ev.IsActionReleased("Flag", true);
-        public bool IsZoomIn => ev.IsActionPressed("ZoomIn", true);
-        public bool IsZoomOut => ev.IsActionPressed("ZoomOut", true);
         public void ProcessDragging(Camera2D camera)
         {
             if (ev is InputEventMouseMotion motion && camera.IsMousePressed)
@@ -25,6 +20,24 @@ public static class Ext
 
             if (ev is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Right } btn && !(camera.IsMousePressed = btn.Pressed))
                 camera.IsMouseDragging = false;
+        }
+    }
+
+    extension(Shortcut shortcut)
+    {
+        public bool IsPressed(InputEvent @event)
+        {
+            foreach (InputEvent item in shortcut.Events)
+                if (item.IsMatch(@event) && @event.IsPressed())
+                    return true;
+            return false;
+        }
+        public bool IsReleased(InputEvent @event)
+        {
+            foreach (InputEvent item in shortcut.Events)
+                if (item.IsMatch(@event) && @event.IsReleased())
+                    return true;
+            return false;
         }
     }
 
