@@ -8,6 +8,19 @@ public partial class Zoom : Camera2D
 	[Export]
 	public float MaxZoom { get; set; } = float.MaxValue;
 	[Export]
+	public float ZoomValue
+	{
+		get => field;
+		set
+		{
+			field = Math.Clamp(value, MinZoom, MaxZoom);
+			ZoomAtCursor(field);
+			EmitSignalIsMaxZoomOut(field <= MinZoom);
+			EmitSignalIsMaxZoomIn(field >= MaxZoom);
+			EmitSignalZoomChanged(field);
+		}
+	} = 1;
+    [Export]
 	public float ZoomInFactor { get; set; } = 1.25f;
 	[Export]
 	public float ZoomOutFactor { get; set; } = .75f;
@@ -36,16 +49,8 @@ public partial class Zoom : Camera2D
 	public delegate void IsMaxZoomInEventHandler(bool isMax);
 	[Signal]
 	public delegate void IsMaxZoomOutEventHandler(bool isMin);
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		var x = Math.Clamp(Zoom.X, MinZoom, MaxZoom);
-		var y = Math.Clamp(Zoom.Y, MinZoom, MaxZoom);
-		EmitSignalIsMaxZoomOut(x <= MinZoom);
-		EmitSignalIsMaxZoomIn(x >= MaxZoom);
-		Zoom = new(x, y);
-	}
+	[Signal]
+	public delegate void ZoomChangedEventHandler(float zoom);
 
 	public override void _Input(InputEvent @event)
 	{
@@ -55,24 +60,24 @@ public partial class Zoom : Camera2D
 			ZoomOutAtCursor();
 	}
 
-	public void ZoomAtCursor(bool zoomIn)
+    public void ZoomInOutAtCursor(bool zoomIn)
+	=> ZoomValue *= zoomIn ? ZoomInFactor : ZoomOutFactor;
+
+    public void ZoomAtCursor(float zoom)
 	{
 		// https://forum.godotengine.org/t/how-to-zoom-camera-to-mouse/37348/2
 		var mouseWorldPos = GetGlobalMousePosition();
-		Zoom *= zoomIn ? ZoomInFactor : ZoomOutFactor;
+		Zoom = Vector2.One * zoom;
 		var newMouseWorldPos = GetGlobalMousePosition();
 		Position += mouseWorldPos - newMouseWorldPos;
 	}
 
+    public void ZoomAtCenter(float zoom)
+	=> Zoom = Vector2.One * zoom;
+
     public void ZoomInAtCursor()
-    {
-		if (Zoom.X < MaxZoom)
-        	ZoomAtCursor(true);
-    }
+	=> ZoomInOutAtCursor(true);
 
     public void ZoomOutAtCursor()
-    {
-		if (Zoom.X > MinZoom)
-	        ZoomAtCursor(false);
-    }
+	=> ZoomInOutAtCursor(false);
 }
