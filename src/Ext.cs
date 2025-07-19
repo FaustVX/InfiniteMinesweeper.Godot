@@ -18,7 +18,7 @@ public static class Ext
                 camera.GlobalPosition -= motion.Relative / camera.Zoom;
             }
 
-            if (ev is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Right } btn && !(camera.IsMousePressed = btn.Pressed))
+            if (ev is InputEventMouseButton { ButtonIndex: MouseButton.Left or MouseButton.Middle or MouseButton.Right } btn && !(camera.IsMousePressed = btn.Pressed))
                 camera.IsMouseDragging = false;
         }
     }
