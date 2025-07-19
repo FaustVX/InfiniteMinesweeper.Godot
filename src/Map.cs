@@ -60,6 +60,8 @@ public partial class Map : Node2D
     public delegate void ResizeEventHandler(float scale);
     [Signal]
     public delegate void InfoEventHandler(string message);
+    [Signal]
+    public delegate void SavingEventHandler(bool isSaving);
 
     private bool _showRemainingMines = true;
     private bool _showGroups;
@@ -95,10 +97,18 @@ public partial class Map : Node2D
 
     public void SaveHandler()
     {
-        if (!Directory.Exists("saves"))
-            Directory.CreateDirectory("save");
-        using var stream = File.Create("saves/game1.json");
-        Game.Save(stream);
+        try
+        {
+            EmitSignalSaving(true);
+            if (!Directory.Exists("saves"))
+                Directory.CreateDirectory("save");
+            using var stream = File.Create("saves/game1.json");
+            Game.Save(stream);
+        }
+        finally
+        {
+            EmitSignalSaving(false);
+        }
     }
 
     public void ResetGroups()
@@ -112,11 +122,19 @@ public partial class Map : Node2D
 
     private void AutoSave()
     {
-        if (!Directory.Exists("saves"))
-            Directory.CreateDirectory("saves");
-        var index = this.IncrementSave();
-        using var stream = File.Create($"saves/autosave-{index}.json");
-        Game.Save(stream);
+        try
+        {
+            EmitSignalSaving(true);
+            if (!Directory.Exists("saves"))
+                Directory.CreateDirectory("saves");
+            var index = this.IncrementSave();
+            using var stream = File.Create($"saves/autosave-{index}.json");
+            Game.Save(stream);
+        }
+        finally
+        {
+            EmitSignalSaving(false);
+        }
     }
 
     public override void _Input(InputEvent @event)
