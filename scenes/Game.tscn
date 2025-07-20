@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://i3rjt0vjpm75"]
+[gd_scene load_steps=29 format=3 uid="uid://i3rjt0vjpm75"]
 
 [ext_resource type="Script" uid="uid://6p7dlh47wnj6" path="res://src/Map.cs" id="1_s0nni"]
 [ext_resource type="Texture2D" uid="uid://cxhmvhbck5ij1" path="res://resources/WinmineXP.png" id="2_aug50"]
@@ -175,7 +175,7 @@ Camera = NodePath("Camera2D")
 MinesPerChunk = 15
 
 [node name="Minefield" type="TileMapLayer" parent="."]
-texture_filter = 1
+texture_filter = 3
 texture_repeat = 2
 tile_set = SubResource("TileSet_q6r6c")
 
