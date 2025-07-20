@@ -204,6 +204,7 @@ public partial class Map : Node2D
                 ref var cell = ref Game.GetCell(new(x, y), ChunkState.NotGenerated);
                 var sourceId = new Pos(x, y).ToChunkPos(out _) switch
                 {
+                    var p when Game.GetChunk(p, ChunkState.NotGenerated).IsCompleted => 3,
                     var p when Game.GetChunk(p, ChunkState.NotGenerated).HasExploded => 2,
                     var p when p.IsEven => 1,
                     _ => 0,

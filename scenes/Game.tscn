@@ -98,10 +98,46 @@ texture = ExtResource("2_aug50")
 3:3/0 = 0
 3:3/0/modulate = Color(1, 0.68, 0.68, 1)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_400sg"]
+texture = ExtResource("2_aug50")
+0:0/0 = 0
+0:0/0/modulate = Color(0.68, 1, 0.68, 1)
+1:0/0 = 0
+1:0/0/modulate = Color(0.68, 1, 0.68, 1)
+2:0/0 = 0
+2:0/0/modulate = Color(0.68, 1, 0.68, 1)
+3:0/0 = 0
+3:0/0/modulate = Color(0.68, 1, 0.68, 1)
+0:1/0 = 0
+0:1/0/modulate = Color(0.68, 1, 0.68, 1)
+1:1/0 = 0
+1:1/0/modulate = Color(0.68, 1, 0.68, 1)
+2:1/0 = 0
+2:1/0/modulate = Color(0.68, 1, 0.68, 1)
+3:1/0 = 0
+3:1/0/modulate = Color(0.68, 1, 0.68, 1)
+0:2/0 = 0
+0:2/0/modulate = Color(0.68, 1, 0.68, 1)
+1:2/0 = 0
+1:2/0/modulate = Color(0.68, 1, 0.68, 1)
+2:2/0 = 0
+2:2/0/modulate = Color(0.68, 1, 0.68, 1)
+3:2/0 = 0
+3:2/0/modulate = Color(0.68, 1, 0.68, 1)
+0:3/0 = 0
+0:3/0/modulate = Color(0.68, 1, 0.68, 1)
+1:3/0 = 0
+1:3/0/modulate = Color(0.68, 1, 0.68, 1)
+2:3/0 = 0
+2:3/0/modulate = Color(0.68, 1, 0.68, 1)
+3:3/0 = 0
+3:3/0/modulate = Color(0.68, 1, 0.68, 1)
+
 [sub_resource type="TileSet" id="TileSet_q6r6c"]
 sources/0 = SubResource("TileSetAtlasSource_0hol4")
 sources/1 = SubResource("TileSetAtlasSource_epypp")
 sources/2 = SubResource("TileSetAtlasSource_aug50")
+sources/3 = SubResource("TileSetAtlasSource_400sg")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r0x5m"]
 texture = ExtResource("3_kiw3p")
