@@ -127,8 +127,7 @@ public static class GameAutoSaveExt
         public int IncrementSave()
         {
             var info = _table.GetOrCreateValue(map);
-            info.LastSave++;
-            return info.LastSave %= info.MaxAutosave;
+            return info.LastSave++;
         }
     }
 
@@ -137,7 +136,7 @@ public static class GameAutoSaveExt
     private sealed class Info
     {
         public int MaxAutosave { get; set; } = 15;
-        public int LastSave { get; set; }
+        public int LastSave { get; set => field = value % MaxAutosave; }
     }
 }
 
