@@ -16,9 +16,39 @@
             "console": "internalConsole"
         },
         {
+            "name": ".NET Core Launch (current file)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/../Godot_v4.4.1-stable_mono_win64/Godot_v4.4.1-stable_mono_win64.exe",
+            "args": ["--path", "${workspaceRoot}", "--", "${file}"],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": ".NET Core Launch (seeded)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/../Godot_v4.4.1-stable_mono_win64/Godot_v4.4.1-stable_mono_win64.exe",
+            "args": ["--path", "${workspaceRoot}", "--", "${input:seed}"],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
         },
+    ],
+    "inputs": [
+        {
+            "id": "seed",
+            "type": "promptString",
+            "description": "Seed for the game (0 for random)",
+            "default": "0"
+        }
     ]
 }

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Godot;
 using InfiniteMinesweeper;
 
@@ -5,15 +7,29 @@ public partial class LoadSavedGame : LoadScene
 {
 	[Export(PropertyHint.GlobalSaveFile, "*.json")]
 	public string File { get; set; } = "saves/game1.json";
+	private bool _startup = false;
 
 	[Signal]
 	public delegate void FileDoNotExistEventHandler(bool value);
 
-    public override void _Process(double delta)
-	=> EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
+	public override void _EnterTree()
+	{
+		ReadOnlySpan<string> args = System.Environment.GetCommandLineArgs();
+		if (args.IndexOf("--") is > 0 and var dash && args[(dash + 1)..] is [var path] && new FileInfo(path) is { Exists: true })
+		{
+			File = path;
+			_startup = true;
+		}
+    }
 
+	public override void _Process(double delta)
+	{
+		EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
+		if (_startup)
+			OnPressed();
+    }
 
-	public void OnPressed()
+    public void OnPressed()
 	{
 		try
 		{
