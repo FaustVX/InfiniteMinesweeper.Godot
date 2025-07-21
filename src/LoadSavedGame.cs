@@ -15,6 +15,7 @@ public partial class LoadSavedGame : LoadScene
 	public override void _EnterTree()
 	{
 		ReadOnlySpan<string> args = System.Environment.GetCommandLineArgs();
+		GetWindow().FilesDropped += FileDropped;
 		if (args.IndexOf("--") is > 0 and var dash && args[(dash + 1)..] is [var path] && new FileInfo(path) is { Exists: true })
 		{
 			File = path;
@@ -22,7 +23,19 @@ public partial class LoadSavedGame : LoadScene
 		}
     }
 
-	public override void _Process(double delta)
+    private void FileDropped(string[] files)
+	{
+		if (files is [var path] && new FileInfo(path) is { Exists: true })
+		{
+			File = path;
+			_startup = true;
+		}
+	}
+
+    public override void _ExitTree()
+	=> GetWindow().FilesDropped -= FileDropped;
+
+    public override void _Process(double delta)
 	{
 		EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
 		if (_startup)
