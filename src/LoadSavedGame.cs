@@ -17,7 +17,7 @@ public partial class LoadSavedGame : LoadScene
 		}
 	}
 
-	private bool _startup = false;
+	private bool _activated = false;
 
 	[Signal]
 	public delegate void ButtonNameChangedEventHandler(string name);
@@ -29,7 +29,7 @@ public partial class LoadSavedGame : LoadScene
 		if (args.IndexOf("--") is > 0 and var dash && args[(dash + 1)..] is [var path] && new FileInfo(path) is { Exists: true })
 		{
 			File = path;
-			_startup = true;
+			_activated = true;
 		}
     }
 
@@ -38,7 +38,7 @@ public partial class LoadSavedGame : LoadScene
 		if (files is [var path] && new FileInfo(path) is { Exists: true })
 		{
 			File = path;
-			_startup = true;
+			_activated = true;
 		}
 	}
 
@@ -47,7 +47,7 @@ public partial class LoadSavedGame : LoadScene
 
     public override void _Process(double delta)
 	{
-		if (_startup)
+		if (_activated)
 			OnPressed();
     }
 
