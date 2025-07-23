@@ -20,9 +20,6 @@ public partial class LoadSavedGame : LoadScene
 	private bool _startup = false;
 
 	[Signal]
-	public delegate void FileDoNotExistEventHandler(bool value);
-
-	[Signal]
 	public delegate void ButtonNameChangedEventHandler(string name);
 
 	public override void _EnterTree()
@@ -50,7 +47,6 @@ public partial class LoadSavedGame : LoadScene
 
     public override void _Process(double delta)
 	{
-		EmitSignalFileDoNotExist(!System.IO.File.Exists(File));
 		if (_startup)
 			OnPressed();
     }
