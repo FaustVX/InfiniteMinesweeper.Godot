@@ -7,10 +7,23 @@ public partial class LoadSavedGame : LoadScene
 {
 	[Export(PropertyHint.GlobalSaveFile, "*.json")]
 	public string File { get; set; } = "saves/game1.json";
+	public string ButtonName
+	{
+		get;
+		set
+		{
+			field = value;
+			EmitSignalButtonNameChanged(ButtonName);
+		}
+	}
+
 	private bool _startup = false;
 
 	[Signal]
 	public delegate void FileDoNotExistEventHandler(bool value);
+
+	[Signal]
+	public delegate void ButtonNameChangedEventHandler(string name);
 
 	public override void _EnterTree()
 	{

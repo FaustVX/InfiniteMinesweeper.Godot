@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cegsvgij3fhx7"]
+
+[ext_resource type="Script" uid="uid://bepl5ngdnh3aq" path="res://src/LoadSavedGame.cs" id="1_82i1e"]
+
+[node name="Load File" type="Button"]
+text = "Load File"
+script = ExtResource("1_82i1e")
+Scene = "uid://i3rjt0vjpm75"
+
+[connection signal="ButtonNameChanged" from="." to="." method="set_text"]
+[connection signal="FileDoNotExist" from="." to="." method="set_disabled"]
+[connection signal="Loading" from="." to="." method="set_disabled"]
+[connection signal="pressed" from="." to="." method="OnPressed"]

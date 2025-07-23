@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dw0fkougnxv5y"]
+[gd_scene load_steps=5 format=3 uid="uid://dw0fkougnxv5y"]
 
 [ext_resource type="Script" uid="uid://n6vx7dscw73y" path="res://src/TemplatedText.cs" id="1_2wh52"]
 [ext_resource type="Script" uid="uid://ckx2hu87ctj2p" path="res://src/LoadNewGame.cs" id="2_ow34m"]
-[ext_resource type="Script" uid="uid://bepl5ngdnh3aq" path="res://src/LoadSavedGame.cs" id="3_l72w3"]
+[ext_resource type="PackedScene" uid="uid://cegsvgij3fhx7" path="res://scenes/load_file_btn.tscn" id="3_ow34m"]
+[ext_resource type="Script" uid="uid://2r6co2k7ijcn" path="res://src/ListSaves.cs" id="4_ow34m"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -27,7 +28,7 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "New Game"
+text = "--- New Game ---"
 horizontal_alignment = 1
 
 [node name="Seed" type="SpinBox" parent="VBoxContainer"]
@@ -64,20 +65,20 @@ Scene = "uid://i3rjt0vjpm75"
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Load Game"
+text = "--- Load Game ---"
 horizontal_alignment = 1
 
-[node name="Load File" type="Button" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-text = "Load File"
-script = ExtResource("3_l72w3")
-Scene = "uid://i3rjt0vjpm75"
+follow_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("4_ow34m")
+LoadButton = ExtResource("3_ow34m")
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
 [connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Create" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Load File" method="set_disabled"]
 [connection signal="pressed" from="VBoxContainer/Create" to="VBoxContainer/Create" method="OnPressed"]
-[connection signal="FileDoNotExist" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Load File" to="VBoxContainer/Create" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="set_disabled"]
-[connection signal="pressed" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="OnPressed"]
