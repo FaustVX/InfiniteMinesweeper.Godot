@@ -67,17 +67,17 @@ layout_mode = 2
 text = "Load Game"
 horizontal_alignment = 1
 
-[node name="Load" type="Button" parent="VBoxContainer"]
+[node name="Load File" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Load"
+text = "Load File"
 script = ExtResource("3_l72w3")
 Scene = "uid://i3rjt0vjpm75"
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="VBoxContainer/HBoxContainer/Label2" method="SetText"]
 [connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Create" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Load" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Create" to="VBoxContainer/Load File" method="set_disabled"]
 [connection signal="pressed" from="VBoxContainer/Create" to="VBoxContainer/Create" method="OnPressed"]
-[connection signal="FileDoNotExist" from="VBoxContainer/Load" to="VBoxContainer/Load" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Load" to="VBoxContainer/Create" method="set_disabled"]
-[connection signal="Loading" from="VBoxContainer/Load" to="VBoxContainer/Load" method="set_disabled"]
-[connection signal="pressed" from="VBoxContainer/Load" to="VBoxContainer/Load" method="OnPressed"]
+[connection signal="FileDoNotExist" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Load File" to="VBoxContainer/Create" method="set_disabled"]
+[connection signal="Loading" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="set_disabled"]
+[connection signal="pressed" from="VBoxContainer/Load File" to="VBoxContainer/Load File" method="OnPressed"]
